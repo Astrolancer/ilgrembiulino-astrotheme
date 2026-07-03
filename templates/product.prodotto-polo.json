@@ -1,1 +1,688 @@
-{"sections":{"main":{"type":"main-product","blocks":{"text_jjBqNC":{"type":"text","settings":{"text":"{{ product.vendor }}","text_style":"uppercase"}},"feedaty_official_product_widget_4wdEwi":{"type":"shopify:\/\/apps\/feedaty-official\/blocks\/product-widget\/1597c10b-7e15-4dee-9287-4aa2114f0e9c","settings":{"merchant_code":"10215410","data_variant":"Striscia-full-alt","data_id":"selettore1"}},"title":{"type":"title","settings":{}},"text_Ge3jKG":{"type":"text","settings":{"text":"{{ product.metafields.custom.tipologia_grembiule | metafield_text }}","text_style":"body"}},"description":{"type":"description","settings":{}},"ymq_product_options_option_A6Ui3G":{"type":"shopify:\/\/apps\/ymq-product-options\/blocks\/option\/86b91121-1f62-4e27-9812-b70a823eb918","settings":{"product":"{{product}}"}},"variant_picker":{"type":"variant_picker","settings":{"picker_type":"button","swatch_shape":"circle"}},"globo_product_options_app_block_6E776m":{"type":"shopify:\/\/apps\/globo-product-options\/blocks\/app-block\/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8","disabled":true,"settings":{}},"quantity_selector":{"type":"quantity_selector","settings":{}},"price":{"type":"price","settings":{}},"buy_buttons":{"type":"buy_buttons","settings":{"show_dynamic_checkout":true,"show_gift_card_recipient":true}},"share":{"type":"share","settings":{"share_label":"Share"}}},"block_order":["text_jjBqNC","feedaty_official_product_widget_4wdEwi","title","text_Ge3jKG","description","ymq_product_options_option_A6Ui3G","variant_picker","globo_product_options_app_block_6E776m","quantity_selector","price","buy_buttons","share"],"custom_css":["{text-wrap: balance;}","h1 {font-size: clamp(1.5rem, 2.5vw, 3.2rem);}",".product__description {font-size: clamp(1.3rem, 2.5vw, 1.5rem);}","product-info {background-color: #fafafa;}",".ymq-box .ymq-options-box:nth-child(1),.ymq-box .ymq-options-box:nth-child(2) {width: 45%;}",".ymq-box .ymq-options-box:nth-child(2) {padding-left: 5%;}",".ymq_option_text_span {display: none !important;}"],"settings":{"enable_sticky_info":true,"color_scheme":"scheme-49719853-1a08-4125-a72c-6e717f46853a","media_size":"medium","constrain_to_viewport":true,"media_fit":"contain","enable_patch_overlay":true,"enable_patch_overlay_mobile":false,"patch_overlay_top":30,"patch_overlay_right":0,"patch_overlay_bottom":0,"patch_overlay_left":33,"school_patch_overlay_top":30,"school_patch_overlay_right":0,"school_patch_overlay_bottom":0,"school_patch_overlay_left":56,"gallery_layout":"thumbnail_slider","mobile_thumbnails":"hide","media_position":"left","image_zoom":"lightbox","hide_variants":true,"enable_video_looping":false,"padding_top":60,"padding_bottom":60}},"rich_text_3YTTnC":{"type":"rich-text","blocks":{"heading_K4jWbH":{"type":"heading","settings":{"heading":"<strong>Attenzione ai prodotti con ricamo o personalizzazione<\/strong>","heading_size":"h2"}},"text_C9e7zm":{"type":"text","settings":{"text":"<p>I prodotti realizzati su misura con ricami, patch o personalizzazioni<strong> non sono rimborsabili né sostituibili <\/strong>se l'errore dipende da dati forniti in modo errato dal cliente (nome sbagliato, carattere, colore, posizione). Prima di confermare l'ordine ti invitiamo a controllare attentamente tutti i dettagli.<\/p>"}},"button_zFByPA":{"type":"button","settings":{"button_label":"Guida al reso e al cambio","button_link":"shopify:\/\/pages\/resi","button_style_secondary":false,"button_label_2":"","button_link_2":"","button_style_secondary_2":false}}},"block_order":["heading_K4jWbH","text_C9e7zm","button_zFByPA"],"custom_css":["div {border-radius: 30px; background: #fafafa; width: fit-content;}"," {margin-bottom: 50px;}","p {font-size: 1.2rem;}","a {font-size: 1.2rem; background: #e4e4e4; color: black;}",".button:after {box-shadow: none !important;}"],"name":"Avviso reso","settings":{"desktop_content_position":"center","content_alignment":"center","color_scheme":"scheme-1","full_width":false,"padding_top":40,"padding_bottom":40}},"related-products":{"type":"related-products","custom_css":["h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 62px); margin: auto; line-height: 100%; text-align: center; margin-bottom: 80px;}","@media (min-width: 1024px) {h2 {max-width: 55%; }}","h3 {font-family: \"Figtree\", sans-serif; font-size: clamp(13px, 6vw, 18px); font-weight: 300 !important; padding-right: 30px; padding-bottom: 10px;}"],"settings":{"heading":"Cerchi un altro modello?","heading_size":"h1","products_to_show":3,"columns_desktop":3,"columns_mobile":"1","color_scheme":"scheme-1","image_ratio":"square","image_shape":"default","show_secondary_image":false,"show_vendor":false,"show_rating":false,"padding_top":100,"padding_bottom":28}},"1752228246150ac104":{"type":"apps","blocks":{"feedaty_official_carouselproduct_widget_FQnwe6":{"type":"shopify:\/\/apps\/feedaty-official\/blocks\/carouselproduct-widget\/1597c10b-7e15-4dee-9287-4aa2114f0e9c","settings":{"merchant_code":"10215410","data_variant":"recensioni-carosello-1","data_id":"selettore12"}}},"block_order":["feedaty_official_carouselproduct_widget_FQnwe6"],"settings":{"include_margins":true}},"youtube_overlay_AKqY7U":{"type":"youtube-overlay","name":"YouTube con Overlay","settings":{"heading":"","heading_size":"h1","video_url":"https:\/\/www.youtube.com\/watch?v=ugbTUEQMHhg","description":"Video ricamo Il Grembiulino","enable_video_looping":true,"enable_video_mute":true,"overlay_image":"shopify:\/\/shop_images\/video_madk.png","overlay_position":"bottom","use_mask":true,"mask_svg":"","color_scheme":"","padding_top":100,"padding_bottom":0}},"image_banner_37bUDN":{"type":"image-banner","disabled":true,"name":"t:sections.image-banner.presets.name","settings":{"image":"shopify:\/\/shop_images\/guida_0.jpg","image_overlay_opacity":0,"image_height":"medium","desktop_content_position":"middle-center","desktop_content_alignment":"center","mobile_content_alignment":"center","mobile_content_position":"middle","show_text_box":true,"show_text_below":true}},"rich_text_XTQtWL":{"type":"rich-text","blocks":{"heading_gwnceR":{"type":"heading","settings":{"heading":"Tutti gli step utili per scegliere il ricamo","heading_size":"h1"}}},"block_order":["heading_gwnceR"],"custom_css":["h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(42px, 6vw, 52px); margin: auto; line-height: 120%; text-align: center;}","@media (min-width: 1024px) {h2 {max-width: 85%; }}","p {transform: skewY(-7deg);}",".button {margin-top: 40px;}"],"name":"t:sections.rich-text.presets.name","settings":{"desktop_content_position":"center","content_alignment":"center","color_scheme":"scheme-2","full_width":true,"padding_top":100,"padding_bottom":0}},"image_with_text_pd4FfY":{"type":"image-with-text","blocks":{"heading_DxhyGk":{"type":"heading","settings":{"heading":"Seleziona il modello e il tipo di ricamo","heading_size":"h1"}},"text_cePDjN":{"type":"text","settings":{"text":"<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.<\/p>","text_style":"body"}}},"block_order":["heading_DxhyGk","text_cePDjN"],"custom_css":["h2 {font-size: 34px; letter-spacing: -0.6px;}",".image-with-text__media {width: 100% !important; display: inline-block; animation: swing 3s ease-in-out infinite; transform-origin: center;}"],"name":"t:sections.image-with-text.presets.name","settings":{"image":"shopify:\/\/shop_images\/guidaricammo_01.png","height":"adapt","desktop_image_width":"small","layout":"image_first","image_behavior":"none","content_layout":"no-overlap","desktop_content_position":"middle","desktop_content_alignment":"left","mobile_content_alignment":"left","section_color_scheme":"scheme-2","color_scheme":"scheme-2","padding_top":100,"padding_bottom":0}},"image_with_text_7cn3dz":{"type":"image-with-text","blocks":{"heading_MKm7pn":{"type":"heading","settings":{"heading":"Scegli il colore e scrivi il nome da inserire!","heading_size":"h1"}},"text_FV3FzH":{"type":"text","settings":{"text":"<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.<\/p>","text_style":"body"}}},"block_order":["heading_MKm7pn","text_FV3FzH"],"custom_css":["h2 {font-size: 34px; letter-spacing: -0.6px;}",".image-with-text__media {width: 100% !important; display: inline-block; animation: float 2s ease-in-out infinite; transform-origin: center;}"],"name":"t:sections.image-with-text.presets.name","settings":{"image":"shopify:\/\/shop_images\/guidaricammo_02.png","height":"adapt","desktop_image_width":"small","layout":"text_first","image_behavior":"none","content_layout":"no-overlap","desktop_content_position":"middle","desktop_content_alignment":"left","mobile_content_alignment":"left","section_color_scheme":"scheme-2","color_scheme":"scheme-2","padding_top":20,"padding_bottom":0}},"image_with_text_B77nJf":{"type":"image-with-text","blocks":{"heading_chtb33":{"type":"heading","settings":{"heading":"Scegli il font e tadaaan!","heading_size":"h1"}},"text_JeMxKG":{"type":"text","settings":{"text":"<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.<\/p>","text_style":"body"}}},"block_order":["heading_chtb33","text_JeMxKG"],"custom_css":["h2 {font-size: 34px; letter-spacing: -0.6px;}",".image-with-text__media {width: 100% !important; display: inline-block; animation: swing 2s ease-in-out infinite; transform-origin: center;}"],"name":"t:sections.image-with-text.presets.name","settings":{"image":"shopify:\/\/shop_images\/guidaricammo_03.png","height":"adapt","desktop_image_width":"small","layout":"image_first","image_behavior":"none","content_layout":"no-overlap","desktop_content_position":"middle","desktop_content_alignment":"left","mobile_content_alignment":"left","section_color_scheme":"scheme-2","color_scheme":"scheme-2","padding_top":36,"padding_bottom":0}},"gallery_slider_TGKjbD":{"type":"gallery-slider","blocks":{"slide_WVjMdt":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/e5e64a04-10e8-43cd-99ad-91f3fe7a22cc.jpg","caption":""}},"slide_R6mXqc":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/Dettaglio_ricamo_edited.jpg","caption":""}},"slide_KFt9ai":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/4beeb8bd-c75c-46a9-9c12-3667a51af31a.jpg","caption":""}},"slide_TWqTrY":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/002a2386-2d84-44c4-a07e-ffe63ba7c80d.jpg","caption":""}},"slide_HhQz8h":{"type":"slide","settings":{"image":"shopify:\/\/shop_images\/3b64d239-c161-43da-abb8-af94c4c2545f.jpg","caption":""}}},"block_order":["slide_WVjMdt","slide_R6mXqc","slide_KFt9ai","slide_TWqTrY","slide_HhQz8h"],"name":"Gallery Slider","settings":{"title":"","heading_size":"h1","background_color":"#b1b1f7","title_color":"#ffffff","caption_color":"#ffffff","image_width":340,"image_height":510,"image_width_mobile":190,"image_height_mobile":300,"image_spacing":10,"image_border_radius":10,"animation_duration":70,"padding_top":100,"padding_bottom":100}},"image_banner_9MDG8D":{"type":"image-banner","custom_css":[".banner__content.banner__content--middle-center {border-top: 10px solid #b1b1f7;}"],"name":"t:sections.image-banner.presets.name","settings":{"image":"shopify:\/\/shop_images\/guidaricammo_04.jpg","image_overlay_opacity":0,"image_height":"medium","desktop_content_position":"middle-center","desktop_content_alignment":"center","mobile_content_alignment":"center","mobile_content_position":"middle","show_text_box":true,"show_text_below":true}},"rich_text_FiNg6K":{"type":"rich-text","blocks":{"heading_cWXyRm":{"type":"heading","settings":{"heading":"Come personalizzare con le patch!","heading_size":"h1"}},"text_pKMJyj":{"type":"text","settings":{"text":"<p>Per aggiungere una patch emoji, o il simbolo della tua squadra, basta cliccare sulla loro immagine, in alternativa per rimuoverle basta cliccare nuovamente.<\/p>"}}},"block_order":["heading_cWXyRm","text_pKMJyj"],"custom_css":["h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(42px, 6vw, 52px); margin: auto; line-height: 120%; text-align: center; text-wrap: balance;}","@media (min-width: 1024px) {h2 {max-width: 85%; } p {max-width: 65%; margin: auto; padding-top: 30px; }}","div {background-color: #f9d0e2;}"],"name":"t:sections.rich-text.presets.name","settings":{"desktop_content_position":"center","content_alignment":"center","color_scheme":"scheme-1","full_width":true,"padding_top":40,"padding_bottom":60}},"multicolumn_iQL6Te":{"type":"multicolumn","blocks":{"column_Fngfqx":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/ricamo_patch1.jpg","title":"","text":"","link_label":"","link":""}},"column_kaFTMV":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/ricamo_patch2.jpg","title":"","text":"","link_label":"","link":""}}},"block_order":["column_Fngfqx","column_kaFTMV"],"custom_css":[".multicolumn {background-color: #f9d0e2; background-blend-mode: darken; background-size: 100% auto;}"],"name":"t:sections.multicolumn.presets.name","settings":{"title":"","heading_size":"h1","background_image":"shopify:\/\/shop_images\/guidaricammo_06_95da2c28-7e95-4661-98ce-67ce9bf0331f.jpg","background_position":"center","image_width":"full","image_ratio":"adapt","button_label":"","button_link":"","columns_desktop":2,"column_alignment":"left","background_style":"none","color_scheme":"","columns_mobile":"1","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}},"rich_text_mB9yFn":{"type":"rich-text","blocks":{"text_j7YfQE":{"type":"text","settings":{"text":"<p>Il ricamo di un emoji sul lato cuore del grembiule prevede l'applicazione di un piccolo disegno, solitamente di dimensioni comprese tra 4 e 5 cm, posizionato sul lato sinistro del petto, sopra il cuore. Questa posizione è scelta per la sua visibilità e per la simbolica connessione con il cuore.<\/p>"}}},"block_order":["text_j7YfQE"],"custom_css":["h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(42px, 6vw, 52px); margin: auto; line-height: 120%; text-align: center; text-wrap: balance;}","@media (min-width: 1024px) {h2 {max-width: 85%; } p {max-width: 65%; margin: auto; padding-top: 30px; }}","div {background-color: #f9d0e2;}"],"name":"t:sections.rich-text.presets.name","settings":{"desktop_content_position":"center","content_alignment":"center","color_scheme":"scheme-1","full_width":true,"padding_top":40,"padding_bottom":0}},"image_banner_xaEp6P":{"type":"image-banner","name":"t:sections.image-banner.presets.name","settings":{"image":"shopify:\/\/shop_images\/guidaricammo_05.jpg","image_overlay_opacity":0,"image_height":"small","desktop_content_position":"bottom-center","desktop_content_alignment":"center","mobile_content_alignment":"center","mobile_content_position":"middle","show_text_box":true,"show_text_below":true}},"image_with_text_TwgcHe":{"type":"image-with-text","blocks":{"text_BzJ3Ph":{"type":"text","settings":{"text":"<p>I grembiuli de \"ilgrembiulino.com\" sono firmati SIGGI GROUP, sinonimo di qualità, attenzione ai dettagli e esperienza nel settore.<\/p>","text_style":"body"}}},"block_order":["text_BzJ3Ph"],"custom_css":["img {mix-blend-mode: darken;}","@media (min-width: 768px) {div {justify-content: center; align-content: center; } .image-with-text__media {justify-self: center; } img {height: auto; align-self: center; left: 20%; position: relative; } p {width: 60%; }}"],"name":"t:sections.image-with-text.presets.name","settings":{"image":"shopify:\/\/shop_images\/SIGGI-LOGO-2017-01-new_bd1a3b55-fd79-4a51-ba1d-acb3339d6236.jpg","height":"small","desktop_image_width":"small","layout":"image_first","image_behavior":"none","content_layout":"overlap","desktop_content_position":"middle","desktop_content_alignment":"left","mobile_content_alignment":"center","section_color_scheme":"","color_scheme":"","padding_top":36,"padding_bottom":36}}},"order":["main","rich_text_3YTTnC","related-products","1752228246150ac104","youtube_overlay_AKqY7U","image_banner_37bUDN","rich_text_XTQtWL","image_with_text_pd4FfY","image_with_text_7cn3dz","image_with_text_B77nJf","gallery_slider_TGKjbD","image_banner_9MDG8D","rich_text_FiNg6K","multicolumn_iQL6Te","rich_text_mB9yFn","image_banner_xaEp6P","image_with_text_TwgcHe"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "text_jjBqNC": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "feedaty_official_product_widget_4wdEwi": {
+          "type": "shopify://apps/feedaty-official/blocks/product-widget/1597c10b-7e15-4dee-9287-4aa2114f0e9c",
+          "settings": {
+            "merchant_code": "10215410",
+            "data_variant": "Striscia-full-alt",
+            "data_id": "selettore1"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "text_Ge3jKG": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.metafields.custom.tipologia_grembiule | metafield_text }}",
+            "text_style": "body"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "ymq_product_options_option_A6Ui3G": {
+          "type": "shopify://apps/ymq-product-options/blocks/option/86b91121-1f62-4e27-9812-b70a823eb918",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "globo_product_options_app_block_6E776m": {
+          "type": "shopify://apps/globo-product-options/blocks/app-block/fdc9fad5-1a0f-4bd4-9c8a-1af6a6eef6b8",
+          "disabled": true,
+          "settings": {}
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_jjBqNC",
+        "feedaty_official_product_widget_4wdEwi",
+        "title",
+        "text_Ge3jKG",
+        "description",
+        "ymq_product_options_option_A6Ui3G",
+        "variant_picker",
+        "globo_product_options_app_block_6E776m",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "share"
+      ],
+      "custom_css": [
+        "{text-wrap: balance;}",
+        "h1 {font-size: clamp(1.5rem, 2.5vw, 3.2rem);}",
+        ".product__description {font-size: clamp(1.3rem, 2.5vw, 1.5rem);}",
+        "product-info {background-color: #fafafa;}",
+        ".ymq-box .ymq-options-box:nth-child(1),.ymq-box .ymq-options-box:nth-child(2) {width: 45%;}",
+        ".ymq-box .ymq-options-box:nth-child(2) {padding-left: 5%;}",
+        ".ymq_option_text_span {display: none !important;}"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-49719853-1a08-4125-a72c-6e717f46853a",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "enable_patch_overlay": true,
+        "enable_patch_overlay_mobile": false,
+        "patch_overlay_top": 30,
+        "patch_overlay_right": 0,
+        "patch_overlay_bottom": 0,
+        "patch_overlay_left": 33,
+        "school_patch_overlay_top": 30,
+        "school_patch_overlay_right": 0,
+        "school_patch_overlay_bottom": 0,
+        "school_patch_overlay_left": 56,
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "rich_text_3YTTnC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_K4jWbH": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Attenzione ai prodotti con ricamo o personalizzazione</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_C9e7zm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>I prodotti realizzati su misura con ricami, patch o personalizzazioni<strong> non sono rimborsabili né sostituibili </strong>se l'errore dipende da dati forniti in modo errato dal cliente (nome sbagliato, carattere, colore, posizione). Prima di confermare l'ordine ti invitiamo a controllare attentamente tutti i dettagli.</p>"
+          }
+        },
+        "button_zFByPA": {
+          "type": "button",
+          "settings": {
+            "button_label": "Guida al reso e al cambio",
+            "button_link": "shopify://pages/resi",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_K4jWbH",
+        "text_C9e7zm",
+        "button_zFByPA"
+      ],
+      "custom_css": [
+        "div {border-radius: 30px; background: #fafafa; width: fit-content;}",
+        " {margin: 50px 0;}",
+        "p {font-size: 1.2rem;}",
+        "a {font-size: 1.2rem; background: #e4e4e4; color: black;}",
+        ".button:after {box-shadow: none !important;}"
+      ],
+      "name": "Avviso reso",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-1",
+        "full_width": false,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "custom_css": [
+        "h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 62px); margin: auto; line-height: 100%; text-align: center; margin-bottom: 80px;}",
+        "@media (min-width: 1024px) {h2 {max-width: 55%; }}",
+        "h3 {font-family: \"Figtree\", sans-serif; font-size: clamp(13px, 6vw, 18px); font-weight: 300 !important; padding-right: 30px; padding-bottom: 10px;}"
+      ],
+      "settings": {
+        "heading": "Cerchi un altro modello?",
+        "heading_size": "h1",
+        "products_to_show": 3,
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 100,
+        "padding_bottom": 28
+      }
+    },
+    "1752228246150ac104": {
+      "type": "apps",
+      "blocks": {
+        "feedaty_official_carouselproduct_widget_FQnwe6": {
+          "type": "shopify://apps/feedaty-official/blocks/carouselproduct-widget/1597c10b-7e15-4dee-9287-4aa2114f0e9c",
+          "settings": {
+            "merchant_code": "10215410",
+            "data_variant": "recensioni-carosello-1",
+            "data_id": "selettore12"
+          }
+        }
+      },
+      "block_order": [
+        "feedaty_official_carouselproduct_widget_FQnwe6"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "youtube_overlay_AKqY7U": {
+      "type": "youtube-overlay",
+      "name": "YouTube con Overlay",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "video_url": "https://www.youtube.com/watch?v=ugbTUEQMHhg",
+        "description": "Video ricamo Il Grembiulino",
+        "enable_video_looping": true,
+        "enable_video_mute": true,
+        "overlay_image": "shopify://shop_images/video_madk.png",
+        "overlay_position": "bottom",
+        "use_mask": true,
+        "mask_svg": "",
+        "color_scheme": "",
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "image_banner_37bUDN": {
+      "type": "image-banner",
+      "disabled": true,
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/guida_0.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "mobile_content_position": "middle",
+        "show_text_box": true,
+        "show_text_below": true
+      }
+    },
+    "rich_text_XTQtWL": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_gwnceR": {
+          "type": "heading",
+          "settings": {
+            "heading": "Tutti gli step utili per scegliere il ricamo",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_gwnceR"
+      ],
+      "custom_css": [
+        "h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(42px, 6vw, 52px); margin: auto; line-height: 120%; text-align: center;}",
+        "@media (min-width: 1024px) {h2 {max-width: 85%; }}",
+        "p {transform: skewY(-7deg);}",
+        ".button {margin-top: 40px;}"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_pd4FfY": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_DxhyGk": {
+          "type": "heading",
+          "settings": {
+            "heading": "Seleziona il modello e il tipo di ricamo",
+            "heading_size": "h1"
+          }
+        },
+        "text_cePDjN": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_DxhyGk",
+        "text_cePDjN"
+      ],
+      "custom_css": [
+        "h2 {font-size: 34px; letter-spacing: -0.6px;}",
+        ".image-with-text__media {width: 100% !important; display: inline-block; animation: swing 3s ease-in-out infinite; transform-origin: center;}"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/guidaricammo_01.png",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-2",
+        "color_scheme": "scheme-2",
+        "padding_top": 100,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_7cn3dz": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_MKm7pn": {
+          "type": "heading",
+          "settings": {
+            "heading": "Scegli il colore e scrivi il nome da inserire!",
+            "heading_size": "h1"
+          }
+        },
+        "text_FV3FzH": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_MKm7pn",
+        "text_FV3FzH"
+      ],
+      "custom_css": [
+        "h2 {font-size: 34px; letter-spacing: -0.6px;}",
+        ".image-with-text__media {width: 100% !important; display: inline-block; animation: float 2s ease-in-out infinite; transform-origin: center;}"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/guidaricammo_02.png",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "text_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-2",
+        "color_scheme": "scheme-2",
+        "padding_top": 20,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_B77nJf": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_chtb33": {
+          "type": "heading",
+          "settings": {
+            "heading": "Scegli il font e tadaaan!",
+            "heading_size": "h1"
+          }
+        },
+        "text_JeMxKG": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_chtb33",
+        "text_JeMxKG"
+      ],
+      "custom_css": [
+        "h2 {font-size: 34px; letter-spacing: -0.6px;}",
+        ".image-with-text__media {width: 100% !important; display: inline-block; animation: swing 2s ease-in-out infinite; transform-origin: center;}"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/guidaricammo_03.png",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-2",
+        "color_scheme": "scheme-2",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "gallery_slider_TGKjbD": {
+      "type": "gallery-slider",
+      "blocks": {
+        "slide_WVjMdt": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/e5e64a04-10e8-43cd-99ad-91f3fe7a22cc.jpg",
+            "caption": ""
+          }
+        },
+        "slide_R6mXqc": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Dettaglio_ricamo_edited.jpg",
+            "caption": ""
+          }
+        },
+        "slide_KFt9ai": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/4beeb8bd-c75c-46a9-9c12-3667a51af31a.jpg",
+            "caption": ""
+          }
+        },
+        "slide_TWqTrY": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/002a2386-2d84-44c4-a07e-ffe63ba7c80d.jpg",
+            "caption": ""
+          }
+        },
+        "slide_HhQz8h": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/3b64d239-c161-43da-abb8-af94c4c2545f.jpg",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_WVjMdt",
+        "slide_R6mXqc",
+        "slide_KFt9ai",
+        "slide_TWqTrY",
+        "slide_HhQz8h"
+      ],
+      "name": "Gallery Slider",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "background_color": "#b1b1f7",
+        "title_color": "#ffffff",
+        "caption_color": "#ffffff",
+        "image_width": 340,
+        "image_height": 510,
+        "image_width_mobile": 190,
+        "image_height_mobile": 300,
+        "image_spacing": 10,
+        "image_border_radius": 10,
+        "animation_duration": 70,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "image_banner_9MDG8D": {
+      "type": "image-banner",
+      "custom_css": [
+        ".banner__content.banner__content--middle-center {border-top: 10px solid #b1b1f7;}"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/guidaricammo_04.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "mobile_content_position": "middle",
+        "show_text_box": true,
+        "show_text_below": true
+      }
+    },
+    "rich_text_FiNg6K": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_cWXyRm": {
+          "type": "heading",
+          "settings": {
+            "heading": "Come personalizzare con le patch!",
+            "heading_size": "h1"
+          }
+        },
+        "text_pKMJyj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Per aggiungere una patch emoji, o il simbolo della tua squadra, basta cliccare sulla loro immagine, in alternativa per rimuoverle basta cliccare nuovamente.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_cWXyRm",
+        "text_pKMJyj"
+      ],
+      "custom_css": [
+        "h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(42px, 6vw, 52px); margin: auto; line-height: 120%; text-align: center; text-wrap: balance;}",
+        "@media (min-width: 1024px) {h2 {max-width: 85%; } p {max-width: 65%; margin: auto; padding-top: 30px; }}",
+        "div {background-color: #f9d0e2;}"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 60
+      }
+    },
+    "multicolumn_iQL6Te": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_Fngfqx": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ricamo_patch1.jpg",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_kaFTMV": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ricamo_patch2.jpg",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_Fngfqx",
+        "column_kaFTMV"
+      ],
+      "custom_css": [
+        ".multicolumn {background-color: #f9d0e2; background-blend-mode: darken; background-size: 100% auto;}",
+        "img{width: 100%;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "background_image": "shopify://shop_images/guidaricammo_06_95da2c28-7e95-4661-98ce-67ce9bf0331f.jpg",
+        "background_position": "center",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "none",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_mB9yFn": {
+      "type": "rich-text",
+      "blocks": {
+        "text_j7YfQE": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Il ricamo di un emoji sul lato cuore del grembiule prevede l'applicazione di un piccolo disegno, solitamente di dimensioni comprese tra 4 e 5 cm, posizionato sul lato sinistro del petto, sopra il cuore. Questa posizione è scelta per la sua visibilità e per la simbolica connessione con il cuore.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_j7YfQE"
+      ],
+      "custom_css": [
+        "h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(42px, 6vw, 52px); margin: auto; line-height: 120%; text-align: center; text-wrap: balance;}",
+        "@media (min-width: 1024px) {h2 {max-width: 85%; } p {max-width: 65%; margin: auto; padding-top: 30px; }}",
+        "div {background-color: #f9d0e2;}"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "image_banner_xaEp6P": {
+      "type": "image-banner",
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/guidaricammo_05.jpg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "mobile_content_position": "middle",
+        "show_text_box": true,
+        "show_text_below": true
+      }
+    },
+    "image_with_text_TwgcHe": {
+      "type": "image-with-text",
+      "blocks": {
+        "text_BzJ3Ph": {
+          "type": "text",
+          "settings": {
+            "text": "<p>I grembiuli de \"ilgrembiulino.com\" sono firmati SIGGI GROUP, sinonimo di qualità, attenzione ai dettagli e esperienza nel settore.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "text_BzJ3Ph"
+      ],
+      "custom_css": [
+        "img {mix-blend-mode: darken;}",
+        "@media (min-width: 768px) {div {justify-content: center; align-content: center; } .image-with-text__media {justify-self: center; } img {height: auto; align-self: center; left: 20%; position: relative; } p {width: 60%; }}"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/SIGGI-LOGO-2017-01-new_bd1a3b55-fd79-4a51-ba1d-acb3339d6236.jpg",
+        "height": "small",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_3YTTnC",
+    "related-products",
+    "1752228246150ac104",
+    "youtube_overlay_AKqY7U",
+    "image_banner_37bUDN",
+    "rich_text_XTQtWL",
+    "image_with_text_pd4FfY",
+    "image_with_text_7cn3dz",
+    "image_with_text_B77nJf",
+    "gallery_slider_TGKjbD",
+    "image_banner_9MDG8D",
+    "rich_text_FiNg6K",
+    "multicolumn_iQL6Te",
+    "rich_text_mB9yFn",
+    "image_banner_xaEp6P",
+    "image_with_text_TwgcHe"
+  ]
+}
