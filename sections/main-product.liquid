@@ -64,6 +64,31 @@
       --school-patch-overlay-right:{{ section.settings.school_patch_overlay_right }}%;
       --school-patch-overlay-bottom:{{ section.settings.school_patch_overlay_bottom }}%;
       --school-patch-overlay-left:{{ section.settings.school_patch_overlay_left }}%;
+      --text-pos-cuore-top:{{ section.settings.text_pos_cuore_top }}%;
+      --text-pos-cuore-right:{{ section.settings.text_pos_cuore_right }}%;
+      --text-pos-cuore-bottom:{{ section.settings.text_pos_cuore_bottom }}%;
+      --text-pos-cuore-left:{{ section.settings.text_pos_cuore_left }}%;
+      --text-pos-cuore-rotation:{{ section.settings.text_pos_cuore_rotation }}deg;
+      --text-pos-colletto-top:{{ section.settings.text_pos_colletto_top }}%;
+      --text-pos-colletto-right:{{ section.settings.text_pos_colletto_right }}%;
+      --text-pos-colletto-bottom:{{ section.settings.text_pos_colletto_bottom }}%;
+      --text-pos-colletto-left:{{ section.settings.text_pos_colletto_left }}%;
+      --text-pos-colletto-rotation:{{ section.settings.text_pos_colletto_rotation }}deg;
+    }
+
+    @media screen and (max-width: 749px) {
+      #MainProduct-{{ section.id }}{
+        --text-pos-cuore-top:{{ section.settings.text_pos_cuore_top_mobile }}%;
+        --text-pos-cuore-right:{{ section.settings.text_pos_cuore_right_mobile }}%;
+        --text-pos-cuore-bottom:{{ section.settings.text_pos_cuore_bottom_mobile }}%;
+        --text-pos-cuore-left:{{ section.settings.text_pos_cuore_left_mobile }}%;
+        --text-pos-cuore-rotation:{{ section.settings.text_pos_cuore_rotation_mobile }}deg;
+        --text-pos-colletto-top:{{ section.settings.text_pos_colletto_top_mobile }}%;
+        --text-pos-colletto-right:{{ section.settings.text_pos_colletto_right_mobile }}%;
+        --text-pos-colletto-bottom:{{ section.settings.text_pos_colletto_bottom_mobile }}%;
+        --text-pos-colletto-left:{{ section.settings.text_pos_colletto_left_mobile }}%;
+        --text-pos-colletto-rotation:{{ section.settings.text_pos_colletto_rotation_mobile }}deg;
+      }
     }
 
     .product__media-patch-applicate{
@@ -127,10 +152,31 @@
     z-index: 2;
     display: flex !important;
     align-items: flex-start;
+    --text-shift: 0px;
+    --text-rotation: 0deg;
+    transform: translateY(var(--text-shift)) rotate(var(--text-rotation));
+    transform-origin: center center;
     }
 
-    .product__media-patch-text-applicate[data-has-patches="true"]{
-      transform: translateY(calc(0.5rem - 30px));
+    .product__media-patch-text-applicate[data-embroidery-location="cuore"]{
+      top: var(--text-pos-cuore-top) !important;
+      right: var(--text-pos-cuore-right) !important;
+      bottom: var(--text-pos-cuore-bottom) !important;
+      left: var(--text-pos-cuore-left) !important;
+      --text-rotation: var(--text-pos-cuore-rotation);
+    }
+
+    .product__media-patch-text-applicate[data-embroidery-location="colletto"]{
+      top: var(--text-pos-colletto-top) !important;
+      right: var(--text-pos-colletto-right) !important;
+      bottom: var(--text-pos-colletto-bottom) !important;
+      left: var(--text-pos-colletto-left) !important;
+      --text-rotation: var(--text-pos-colletto-rotation);
+    }
+
+    /* Lo shift anti-sovrapposizione con le patch vale solo nel fallback generico (nessuna location dedicata) */
+    .product__media-patch-text-applicate[data-embroidery-location=""][data-has-patches="true"]{
+      --text-shift: calc(0.5rem - 30px);
     }
 
     {%- unless section.settings.enable_patch_overlay -%}
@@ -153,8 +199,8 @@
         max-width:50px;
       }
 
-      .product__media-patch-text-applicate[data-has-patches="true"]{
-        transform: translateY(calc(0.25rem - 30px));
+      .product__media-patch-text-applicate[data-embroidery-location=""][data-has-patches="true"]{
+        --text-shift: calc(0.25rem - 30px);
       }
 
       .product__media-patch-text-applicate .product__media-patch-text{
@@ -246,6 +292,16 @@
           dataName: 'properties[Scegli la patch perfetta per il tuo bimbo/a!]',
         },
       ];
+
+      // Mappa il valore della posizione ricamo verso la key usata in CSS (data-embroidery-location).
+      // Valori non mappati -> '' -> fallback alla posizione generica (--patch-overlay-*).
+      const embroideryLocationKeys = {
+        'lato cuore': 'cuore',
+        'colletto': 'colletto',
+      };
+
+      const getEmbroideryLocationKey = (value) =>
+        embroideryLocationKeys[(value || '').trim().toLowerCase()] || '';
 
       const state = Object.create(null);
       let isInternalCheckboxUpdate = false;
@@ -396,11 +452,13 @@
         backgroundStyle = {},
         fontStyle = {},
         hasVisiblePatch = false,
+        locationKey = '',
       } = {}) => {
         const targets = document.querySelectorAll(patchTextTargetsSelector);
         targets.forEach((target) => {
           target.replaceChildren();
           target.dataset.hasPatches = hasVisiblePatch ? 'true' : 'false';
+          target.dataset.embroideryLocation = locationKey;
           if (!text) return;
 
           const textEl = document.createElement('div');
@@ -437,6 +495,7 @@
 
         const nameValue = nameInput?.value?.trim() || '';
         const locationValue = locationInput?.value || '';
+        const locationKey = getEmbroideryLocationKey(locationValue);
 
         if (!nameValue || !locationInput || locationValue.toLowerCase() === 'no') {
           renderPatchText();
@@ -465,6 +524,7 @@
           backgroundStyle,
           fontStyle,
           hasVisiblePatch,
+          locationKey,
         });
       };
 
@@ -3232,6 +3292,206 @@
       "step": 1,
       "default": 0,
       "label": "Left (%)"
+    },
+    {
+      "type": "header",
+      "content": "Scritta nome — Lato cuore (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Top (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Right (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Bottom (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Left (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_rotation",
+      "min": -180,
+      "max": 180,
+      "step": 5,
+      "default": 0,
+      "unit": "°",
+      "label": "Rotazione"
+    },
+    {
+      "type": "header",
+      "content": "Scritta nome — Lato cuore (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Top (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Right (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Bottom (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Left (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_cuore_rotation_mobile",
+      "min": -180,
+      "max": 180,
+      "step": 5,
+      "default": 0,
+      "unit": "°",
+      "label": "Rotazione"
+    },
+    {
+      "type": "header",
+      "content": "Scritta nome — Colletto (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Top (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Right (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Bottom (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Left (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_rotation",
+      "min": -180,
+      "max": 180,
+      "step": 5,
+      "default": 0,
+      "unit": "°",
+      "label": "Rotazione"
+    },
+    {
+      "type": "header",
+      "content": "Scritta nome — Colletto (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Top (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Right (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Bottom (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "label": "Left (%)"
+    },
+    {
+      "type": "range",
+      "id": "text_pos_colletto_rotation_mobile",
+      "min": -180,
+      "max": 180,
+      "step": 5,
+      "default": 0,
+      "unit": "°",
+      "label": "Rotazione"
     },
     {
       "type": "select",
