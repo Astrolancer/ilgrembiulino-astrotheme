@@ -55,40 +55,30 @@
       position:relative;
     }
 
+    {%- comment -%}
+      Posizioni/rotazioni overlay = per-prodotto via metafield (namespace "overlay"),
+      valore unico condiviso desktop/mobile. Fallback a 0 se il metafield è vuoto.
+      La patch scuola resta invece configurata da section.settings (globale).
+    {%- endcomment -%}
     #MainProduct-{{ section.id }}{
-      --patch-overlay-top:{{ section.settings.patch_overlay_top }}%;
-      --patch-overlay-right:{{ section.settings.patch_overlay_right }}%;
-      --patch-overlay-bottom:{{ section.settings.patch_overlay_bottom }}%;
-      --patch-overlay-left:{{ section.settings.patch_overlay_left }}%;
+      --patch-overlay-top:{{ product.metafields.overlay.patch_top.value | default: 0 }}%;
+      --patch-overlay-right:{{ product.metafields.overlay.patch_right.value | default: 0 }}%;
+      --patch-overlay-bottom:{{ product.metafields.overlay.patch_bottom.value | default: 0 }}%;
+      --patch-overlay-left:{{ product.metafields.overlay.patch_left.value | default: 0 }}%;
       --school-patch-overlay-top:{{ section.settings.school_patch_overlay_top }}%;
       --school-patch-overlay-right:{{ section.settings.school_patch_overlay_right }}%;
       --school-patch-overlay-bottom:{{ section.settings.school_patch_overlay_bottom }}%;
       --school-patch-overlay-left:{{ section.settings.school_patch_overlay_left }}%;
-      --text-pos-cuore-top:{{ section.settings.text_pos_cuore_top }}%;
-      --text-pos-cuore-right:{{ section.settings.text_pos_cuore_right }}%;
-      --text-pos-cuore-bottom:{{ section.settings.text_pos_cuore_bottom }}%;
-      --text-pos-cuore-left:{{ section.settings.text_pos_cuore_left }}%;
-      --text-pos-cuore-rotation:{{ section.settings.text_pos_cuore_rotation }}deg;
-      --text-pos-colletto-top:{{ section.settings.text_pos_colletto_top }}%;
-      --text-pos-colletto-right:{{ section.settings.text_pos_colletto_right }}%;
-      --text-pos-colletto-bottom:{{ section.settings.text_pos_colletto_bottom }}%;
-      --text-pos-colletto-left:{{ section.settings.text_pos_colletto_left }}%;
-      --text-pos-colletto-rotation:{{ section.settings.text_pos_colletto_rotation }}deg;
-    }
-
-    @media screen and (max-width: 749px) {
-      #MainProduct-{{ section.id }}{
-        --text-pos-cuore-top:{{ section.settings.text_pos_cuore_top_mobile }}%;
-        --text-pos-cuore-right:{{ section.settings.text_pos_cuore_right_mobile }}%;
-        --text-pos-cuore-bottom:{{ section.settings.text_pos_cuore_bottom_mobile }}%;
-        --text-pos-cuore-left:{{ section.settings.text_pos_cuore_left_mobile }}%;
-        --text-pos-cuore-rotation:{{ section.settings.text_pos_cuore_rotation_mobile }}deg;
-        --text-pos-colletto-top:{{ section.settings.text_pos_colletto_top_mobile }}%;
-        --text-pos-colletto-right:{{ section.settings.text_pos_colletto_right_mobile }}%;
-        --text-pos-colletto-bottom:{{ section.settings.text_pos_colletto_bottom_mobile }}%;
-        --text-pos-colletto-left:{{ section.settings.text_pos_colletto_left_mobile }}%;
-        --text-pos-colletto-rotation:{{ section.settings.text_pos_colletto_rotation_mobile }}deg;
-      }
+      --text-pos-cuore-top:{{ product.metafields.overlay.cuore_top.value | default: 0 }}%;
+      --text-pos-cuore-right:{{ product.metafields.overlay.cuore_right.value | default: 0 }}%;
+      --text-pos-cuore-bottom:{{ product.metafields.overlay.cuore_bottom.value | default: 0 }}%;
+      --text-pos-cuore-left:{{ product.metafields.overlay.cuore_left.value | default: 0 }}%;
+      --text-pos-cuore-rotation:{{ product.metafields.overlay.cuore_rotation.value | default: 0 }}deg;
+      --text-pos-colletto-top:{{ product.metafields.overlay.colletto_top.value | default: 0 }}%;
+      --text-pos-colletto-right:{{ product.metafields.overlay.colletto_right.value | default: 0 }}%;
+      --text-pos-colletto-bottom:{{ product.metafields.overlay.colletto_bottom.value | default: 0 }}%;
+      --text-pos-colletto-left:{{ product.metafields.overlay.colletto_left.value | default: 0 }}%;
+      --text-pos-colletto-rotation:{{ product.metafields.overlay.colletto_rotation.value | default: 0 }}deg;
     }
 
     .product__media-patch-applicate{
@@ -3228,40 +3218,8 @@
       "label": "Mostra patch sovrapposte (mobile)"
     },
     {
-      "type": "range",
-      "id": "patch_overlay_top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Top (%)"
-    },
-    {
-      "type": "range",
-      "id": "patch_overlay_right",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Right (%)"
-    },
-    {
-      "type": "range",
-      "id": "patch_overlay_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Bottom (%)"
-    },
-    {
-      "type": "range",
-      "id": "patch_overlay_left",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Left (%)"
+      "type": "paragraph",
+      "content": "Le posizioni di patch e nome (Lato cuore / Colletto) si impostano ora nei metafield del singolo prodotto (namespace \"overlay\")."
     },
     {
       "type": "header",
@@ -3302,206 +3260,6 @@
       "step": 1,
       "default": 0,
       "label": "Left (%)"
-    },
-    {
-      "type": "header",
-      "content": "Scritta nome — Lato cuore (desktop)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Top (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_right",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Right (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Bottom (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_left",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Left (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_rotation",
-      "min": -180,
-      "max": 180,
-      "step": 5,
-      "default": 0,
-      "unit": "°",
-      "label": "Rotazione"
-    },
-    {
-      "type": "header",
-      "content": "Scritta nome — Lato cuore (mobile)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_top_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Top (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_right_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Right (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_bottom_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Bottom (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_left_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Left (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_cuore_rotation_mobile",
-      "min": -180,
-      "max": 180,
-      "step": 5,
-      "default": 0,
-      "unit": "°",
-      "label": "Rotazione"
-    },
-    {
-      "type": "header",
-      "content": "Scritta nome — Colletto (desktop)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Top (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_right",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Right (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Bottom (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_left",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Left (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_rotation",
-      "min": -180,
-      "max": 180,
-      "step": 5,
-      "default": 0,
-      "unit": "°",
-      "label": "Rotazione"
-    },
-    {
-      "type": "header",
-      "content": "Scritta nome — Colletto (mobile)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_top_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Top (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_right_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Right (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_bottom_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Bottom (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_left_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "default": 0,
-      "label": "Left (%)"
-    },
-    {
-      "type": "range",
-      "id": "text_pos_colletto_rotation_mobile",
-      "min": -180,
-      "max": 180,
-      "step": 5,
-      "default": 0,
-      "unit": "°",
-      "label": "Rotazione"
     },
     {
       "type": "select",
