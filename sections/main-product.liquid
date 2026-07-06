@@ -176,7 +176,15 @@
       right: var(--text-pos-colletto-right) !important;
       bottom: var(--text-pos-colletto-bottom) !important;
       left: var(--text-pos-colletto-left) !important;
+      width: max-content !important;
+      max-width: none !important;
       --text-rotation: var(--text-pos-colletto-rotation);
+    }
+
+    /* Colletto: nome sempre su una riga, mai a capo */
+    .product__media-patch-text-applicate[data-embroidery-location="colletto"] .product__media-patch-text{
+      white-space: nowrap !important;
+      overflow-wrap: normal !important;
     }
 
     /* Lo shift anti-sovrapposizione con le patch vale solo nel fallback generico (nessuna location dedicata) */
@@ -222,7 +230,7 @@
       font-weight:700;
       text-shadow:none;
       transform: rotate(var(--text-rotation));
-      transform-origin: center center;
+      transform-origin: left top;
     }
 
     .product__media-school-patch-applicate{
