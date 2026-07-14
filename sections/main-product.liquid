@@ -26,6 +26,29 @@
   {%- endif -%}
 
   {%- style -%}
+    /* Font reali del ricamo, per un'anteprima a schermo più fedele */
+    @font-face {
+      font-family: 'Corsivo ilgrembiulino';
+      src: url('{{ "Corsivo_ilgrembiulino.ttf" | asset_url }}') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Maiuscoletto ilgrembiulino';
+      src: url('{{ "Maiuscoletto_ilgrembiulino.ttf" | asset_url }}') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Stampatello ilgrembiulino';
+      src: url('{{ "Stampatello_ilgrembiulino.otf" | asset_url }}') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
       padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -412,27 +435,27 @@
         switch ((fontValue || '').toLowerCase()) {
           case 'corsivo':
             return {
-              fontFamily: '"Brush Script MT", "Segoe Script", cursive',
-              fontStyle: 'italic',
-              fontWeight: '700',
+              fontFamily: '"Corsivo ilgrembiulino", "Brush Script MT", "Segoe Script", cursive',
+              fontStyle: 'normal',
+              fontWeight: '400',
               textTransform: 'none',
               letterSpacing: '0',
               fontSize: '1.35rem',
             };
           case 'stampatello':
             return {
-              fontFamily: '"Arial Rounded MT Bold", Arial, sans-serif',
+              fontFamily: '"Stampatello ilgrembiulino", "Arial Rounded MT Bold", Arial, sans-serif',
               fontStyle: 'normal',
-              fontWeight: '700',
+              fontWeight: '400',
               textTransform: 'uppercase',
               letterSpacing: '0.04em',
               fontSize: baseFontSize,
             };
           case 'maiuscoletto':
             return {
-              fontFamily: 'Georgia, "Times New Roman", serif',
+              fontFamily: '"Maiuscoletto ilgrembiulino", Georgia, "Times New Roman", serif',
               fontStyle: 'normal',
-              fontWeight: '700',
+              fontWeight: '400',
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
               fontSize: baseFontSize,
@@ -469,6 +492,9 @@
       // Colletto: se il nome eccede la larghezza massima del box, riduce il font
       // quel tanto che basta per stare su una riga (mai a capo).
       const fitTextToWidth = (container, textEl) => {
+        // Riparti sempre dalla dimensione CSS base: rende la funzione ri-eseguibile
+        // senza rimpicciolire in modo cumulativo (es. re-fit dopo il caricamento font).
+        textEl.style.removeProperty('font-size');
         const available = container.clientWidth;
         const needed = textEl.scrollWidth;
         if (available > 0 && needed > available + 1) {
@@ -518,6 +544,12 @@
 
           if (locationKey === 'colletto') {
             fitTextToWidth(target, textEl);
+            // I font custom caricano in async (font-display:swap): rimisura appena pronti.
+            if (document.fonts && document.fonts.ready) {
+              document.fonts.ready.then(() => {
+                if (textEl.isConnected) fitTextToWidth(target, textEl);
+              });
+            }
           }
         });
       };
