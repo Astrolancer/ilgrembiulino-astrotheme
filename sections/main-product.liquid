@@ -195,6 +195,14 @@
       --text-rotation: var(--text-pos-cuore-rotation);
     }
 
+    /* Solo desktop: box lato cuore ridotto di 10px (100px -> 90px) */
+    @media screen and (min-width: 750px) {
+      .product__media-patch-text-applicate[data-embroidery-location="cuore"]{
+        width: 90px !important;
+        max-width: 90px !important;
+      }
+    }
+
     .product__media-patch-text-applicate[data-embroidery-location="colletto"]{
       top: var(--text-pos-colletto-top) !important;
       right: var(--text-pos-colletto-right) !important;
