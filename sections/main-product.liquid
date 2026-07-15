@@ -205,8 +205,9 @@
       --text-rotation: var(--text-pos-colletto-rotation);
     }
 
-    /* Colletto: nome sempre su una riga, mai a capo */
-    .product__media-patch-text-applicate[data-embroidery-location="colletto"] .product__media-patch-text{
+    /* Colletto e lato cuore: nome sempre su una riga, mai a capo (si rimpicciolisce via JS) */
+    .product__media-patch-text-applicate[data-embroidery-location="colletto"] .product__media-patch-text,
+    .product__media-patch-text-applicate[data-embroidery-location="cuore"] .product__media-patch-text{
       white-space: nowrap !important;
       overflow-wrap: normal !important;
     }
@@ -542,7 +543,7 @@
 
           target.appendChild(textEl);
 
-          if (locationKey === 'colletto') {
+          if (locationKey === 'colletto' || locationKey === 'cuore') {
             fitTextToWidth(target, textEl);
             // I font custom caricano in async (font-display:swap): rimisura appena pronti.
             if (document.fonts && document.fonts.ready) {
