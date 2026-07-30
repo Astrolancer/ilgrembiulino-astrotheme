@@ -1,0 +1,489 @@
+{%- liquid
+  assign show_popup = section.settings.enable
+  if section.settings.end_date != blank
+    assign end_s = section.settings.end_date | append: ' 23:59:59' | date: '%s' | plus: 0
+    assign now_s = 'now' | date: '%s' | plus: 0
+    if end_s > 0 and end_s < now_s
+      assign show_popup = false
+    endif
+  endif
+-%}
+
+{%- if show_popup -%}
+  <div
+    id="PromoPopup-{{ section.id }}"
+    class="promo-popup"
+    data-delay="{{ section.settings.delay }}"
+    data-frequency="{{ section.settings.frequency_days }}"
+    data-end-date="{{ section.settings.end_date }}"
+    hidden
+  >
+    <div class="promo-popup__overlay" data-promo-close></div>
+    <div
+      class="promo-popup__card color-{{ section.settings.color_scheme }} gradient"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="PromoPopupHeading-{{ section.id }}"
+    >
+      <button type="button" class="promo-popup__close" data-promo-close aria-label="Chiudi">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="5" y1="5" x2="19" y2="19"></line>
+          <line x1="19" y1="5" x2="5" y2="19"></line>
+        </svg>
+      </button>
+
+      {%- if section.settings.badge_text != blank -%}
+        <div class="promo-popup__badge" aria-hidden="true">
+          <span>{{ section.settings.badge_text }}</span>
+        </div>
+      {%- endif -%}
+
+      <div class="promo-popup__content">
+        {%- if section.settings.kicker != blank -%}
+          <p class="promo-popup__kicker">{{ section.settings.kicker }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="promo-popup__heading" id="PromoPopupHeading-{{ section.id }}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <div class="promo-popup__text rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        <p class="promo-popup__countdown" data-promo-countdown hidden></p>
+
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}" class="button promo-popup__cta" data-promo-cta>
+            {{ section.settings.cta_label }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.dismiss_label != blank -%}
+          <button type="button" class="promo-popup__dismiss" data-promo-close>
+            {{ section.settings.dismiss_label }}
+          </button>
+        {%- endif -%}
+      </div>
+
+      <div class="promo-popup__footer" aria-hidden="true">
+        <div class="promo-popup__beach">🏖️&ensp;🎒&ensp;✏️</div>
+        <svg class="promo-popup__wave" viewBox="0 0 120 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 20 Q 15 8 30 20 T 60 20 T 90 20 T 120 20 V 28 H 0 Z" fill="#b1b1f7"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  {%- style -%}
+    .promo-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+    }
+
+    .promo-popup[hidden] {
+      display: none;
+    }
+
+    .promo-popup__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 18, 18, 0.55);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .promo-popup.is-open .promo-popup__overlay {
+      opacity: 1;
+    }
+
+    .promo-popup__card {
+      position: relative;
+      width: min(46rem, calc(100vw - 3rem));
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(18, 18, 18, 0.35);
+      opacity: 0;
+      transform: scale(0.85) translateY(24px);
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .promo-popup.is-open .promo-popup__card {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .promo-popup__card::before {
+      content: '';
+      position: absolute;
+      inset: 10px;
+      border: 2px dashed rgba(18, 18, 18, 0.15);
+      border-radius: 16px;
+      pointer-events: none;
+    }
+
+    .promo-popup__content {
+      padding: 4rem 3rem 0;
+    }
+
+    .promo-popup__close {
+      position: absolute;
+      top: 1.6rem;
+      right: 1.6rem;
+      z-index: 2;
+      width: 3.4rem;
+      height: 3.4rem;
+      display: grid;
+      place-items: center;
+      border: none;
+      border-radius: 50%;
+      background: rgba(18, 18, 18, 0.08);
+      color: currentColor;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .promo-popup__close:hover {
+      background: rgba(18, 18, 18, 0.16);
+      transform: rotate(90deg);
+    }
+
+    .promo-popup__badge {
+      position: absolute;
+      top: -3rem;
+      right: -1.6rem;
+      z-index: 2;
+      width: 10.5rem;
+      height: 10.5rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #f6cc38;
+      color: #121212;
+      font-weight: 800;
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+      transform: rotate(8deg);
+      box-shadow: 0 6px 20px rgba(18, 18, 18, 0.25);
+      animation: promo-popup-wobble 3s ease-in-out infinite;
+    }
+
+    .promo-popup__badge::before {
+      content: '';
+      position: absolute;
+      inset: -1.1rem;
+      border-radius: 50%;
+      background: repeating-conic-gradient(#f6cc38 0deg 12deg, transparent 12deg 24deg);
+      opacity: 0.55;
+      z-index: -1;
+    }
+
+    @keyframes promo-popup-wobble {
+      0%, 100% { transform: rotate(8deg); }
+      50% { transform: rotate(-2deg); }
+    }
+
+    .promo-popup__kicker {
+      margin: 0 0 1rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .promo-popup__heading {
+      margin: 0 auto 1.6rem;
+      font-family: 'Playwrite IT Moderna', cursive;
+      font-feature-settings: 'liga' 1, 'calt' 1;
+      font-variant-ligatures: common-ligatures contextual;
+      font-size: clamp(26px, 5vw, 38px);
+      letter-spacing: -1px;
+      line-height: 115%;
+      transform: skewY(-7deg);
+    }
+
+    .promo-popup__text {
+      margin: 0 auto;
+      max-width: 34rem;
+      font-size: 1.5rem;
+      line-height: 145%;
+    }
+
+    .promo-popup__countdown {
+      margin: 1.4rem 0 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .promo-popup__countdown[hidden] {
+      display: none;
+    }
+
+    .promo-popup__cta {
+      margin-top: 2.2rem;
+    }
+
+    .promo-popup__dismiss {
+      display: block;
+      margin: 1.4rem auto 0;
+      padding: 0;
+      border: none;
+      background: none;
+      color: currentColor;
+      font-size: 1.2rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      opacity: 0.65;
+      cursor: pointer;
+    }
+
+    .promo-popup__dismiss:hover {
+      opacity: 1;
+    }
+
+    .promo-popup__footer {
+      position: relative;
+      margin-top: 2.6rem;
+      border-radius: 0 0 24px 24px;
+      overflow: hidden;
+    }
+
+    .promo-popup__beach {
+      position: relative;
+      z-index: 1;
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .promo-popup__wave {
+      display: block;
+      width: 100%;
+      height: 3.4rem;
+    }
+
+    body.promo-popup-open {
+      overflow: hidden;
+    }
+
+    @media screen and (max-width: 749px) {
+      .promo-popup__badge {
+        width: 8.4rem;
+        height: 8.4rem;
+        font-size: 2rem;
+        top: -2.4rem;
+        right: -0.8rem;
+      }
+
+      .promo-popup__content {
+        padding: 3.4rem 2rem 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .promo-popup__overlay,
+      .promo-popup__card {
+        transition: none;
+      }
+
+      .promo-popup__badge {
+        animation: none;
+      }
+    }
+  {%- endstyle -%}
+
+  <script>
+    (function () {
+      var root = document.getElementById('PromoPopup-{{ section.id }}');
+      if (!root) return;
+
+      var STORAGE_KEY = 'promo-popup-{{ section.id }}';
+      var frequencyDays = parseInt(root.dataset.frequency, 10) || 0;
+      var delayMs = (parseInt(root.dataset.delay, 10) || 0) * 1000;
+
+      function dismissedRecently() {
+        try {
+          var ts = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+          if (!ts) return false;
+          return Date.now() - ts < frequencyDays * 864e5;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function remember() {
+        try {
+          localStorage.setItem(STORAGE_KEY, String(Date.now()));
+        } catch (e) {
+          /* storage non disponibile */
+        }
+      }
+
+      function open() {
+        root.removeAttribute('hidden');
+        requestAnimationFrame(function () {
+          root.classList.add('is-open');
+        });
+        document.body.classList.add('promo-popup-open');
+        var closeBtn = root.querySelector('.promo-popup__close');
+        if (closeBtn) closeBtn.focus();
+      }
+
+      function close(save) {
+        root.classList.remove('is-open');
+        document.body.classList.remove('promo-popup-open');
+        window.setTimeout(function () {
+          root.setAttribute('hidden', '');
+        }, 300);
+        if (save !== false) remember();
+      }
+
+      var countdown = root.querySelector('[data-promo-countdown]');
+      if (countdown && root.dataset.endDate) {
+        var end = new Date(root.dataset.endDate + 'T23:59:59');
+        if (!isNaN(end.getTime())) {
+          var daysLeft = Math.ceil((end.getTime() - Date.now()) / 864e5);
+          if (daysLeft === 1) {
+            countdown.textContent = '⏰ Ultimo giorno di promo!';
+            countdown.hidden = false;
+          } else if (daysLeft > 1) {
+            countdown.textContent = '⏳ Affrettati: mancano solo ' + daysLeft + ' giorni!';
+            countdown.hidden = false;
+          }
+        }
+      }
+
+      root.querySelectorAll('[data-promo-close]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          close();
+        });
+      });
+
+      var cta = root.querySelector('[data-promo-cta]');
+      if (cta) {
+        cta.addEventListener('click', function () {
+          remember();
+        });
+      }
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !root.hasAttribute('hidden')) close();
+      });
+
+      {% if request.design_mode %}
+        document.addEventListener('shopify:section:select', function (event) {
+          if (event.detail.sectionId === '{{ section.id }}') open();
+        });
+        document.addEventListener('shopify:section:deselect', function (event) {
+          if (event.detail.sectionId === '{{ section.id }}') close(false);
+        });
+      {% else %}
+        if (!dismissedRecently()) {
+          window.setTimeout(open, delayMs);
+        }
+      {% endif %}
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Popup promo",
+  "class": "promo-popup-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "Mostra il popup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Occhiello (testo piccolo sopra il titolo)",
+      "default": "SUMMER PROMO · FINO AL 31 AGOSTO"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titolo",
+      "default": "Ultimo tuffo, poi tutti in grembiule!"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Testo",
+      "default": "<p>Il back to school inizia sotto l’ombrellone: fino al 31 agosto tutti i <strong>grembiuli neutri</strong> sono in <strong>promo estiva</strong>. Niente codici: lo sconto è già sul prezzo!</p>"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Testo del bollino (sole)",
+      "default": "PROMO"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Testo bottone",
+      "default": "APPROFITTANE ORA"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link bottone"
+    },
+    {
+      "type": "text",
+      "id": "dismiss_label",
+      "label": "Testo link \"no grazie\"",
+      "default": "No grazie, resto sotto l’ombrellone"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "delay",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "s",
+      "label": "Ritardo prima di mostrarlo",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "frequency_days",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "label": "Non mostrarlo di nuovo per (giorni)",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Data di fine promo (AAAA-MM-GG)",
+      "info": "Dopo questa data il popup sparisce da solo. Alimenta anche il conto alla rovescia.",
+      "default": "2026-08-31"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Popup promo"
+    }
+  ]
+}
+{% endschema %}
