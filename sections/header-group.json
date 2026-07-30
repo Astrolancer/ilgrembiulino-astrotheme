@@ -80,7 +80,7 @@
     "promo_popup": {
       "type": "promo-popup",
       "settings": {
-        "enable": false,
+        "enable": true,
         "kicker": "SUMMER PROMO · FINO AL 31 AGOSTO",
         "heading": "Ultimo tuffo, poi tutti in grembiule!",
         "text": "<p>Il back to school inizia sotto l’ombrellone: fino al 31 agosto tutti i <strong>grembiuli neutri</strong> sono in <strong>promo estiva</strong>. Niente codici: lo sconto è già sul prezzo!</p>",
