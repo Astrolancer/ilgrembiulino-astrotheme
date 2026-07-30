@@ -14,18 +14,18 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
-          "settings": {
-            "text": "Promossi in convenienza! Consegna omaggio con una spesa minima di 99,99€.",
-            "link": ""
-          }
-        },
         "announcement-bar-1": {
           "type": "announcement",
           "settings": {
             "text": "🌊 Summer promo sui grembiuli neutri! Solo fino al 31 agosto",
             "link": "shopify://collections/all"
+          }
+        },
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Promossi in convenienza! Consegna omaggio con una spesa minima di 99,99€.",
+            "link": ""
           }
         }
       },
@@ -80,7 +80,7 @@
     "promo_popup": {
       "type": "promo-popup",
       "settings": {
-        "enable": true,
+        "enable": false,
         "kicker": "SUMMER PROMO · FINO AL 31 AGOSTO",
         "heading": "Ultimo tuffo, poi tutti in grembiule!",
         "text": "<p>Il back to school inizia sotto l’ombrellone: fino al 31 agosto tutti i <strong>grembiuli neutri</strong> sono in <strong>promo estiva</strong>. Niente codici: lo sconto è già sul prezzo!</p>",
