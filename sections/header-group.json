@@ -90,7 +90,7 @@
         "dismiss_label": "No grazie, resto sotto l’ombrellone",
         "color_scheme": "scheme-76801a77-90c5-48fc-aa74-014c29761c77",
         "delay": 3,
-        "frequency_days": 7,
+        "frequency_days": 2,
         "end_date": "2026-08-31"
       }
     }
