@@ -17,12 +17,20 @@
         "announcement-bar-1": {
           "type": "announcement",
           "settings": {
+            "text": "🌊 Gli ordini effettuati dal 10 al 16 agosto compresi saranno evasi a partire dal 17 agosto.Grazie per la pazienza e buone vacanze! 🏖️",
+            "link": "shopify://collections/all"
+          }
+        },
+        "announcement_7VAj4D": {
+          "type": "announcement",
+          "settings": {
             "text": "🌊 Summer promo sui grembiuli neutri! Solo fino al 31 agosto",
             "link": "shopify://collections/all"
           }
         },
         "announcement-bar-0": {
           "type": "announcement",
+          "disabled": true,
           "settings": {
             "text": "Promossi in convenienza! Consegna omaggio con una spesa minima di 99,99€.",
             "link": ""
@@ -31,6 +39,7 @@
       },
       "block_order": [
         "announcement-bar-1",
+        "announcement_7VAj4D",
         "announcement-bar-0"
       ],
       "custom_css": [
