@@ -1,1 +1,342 @@
-{"sections":{"banner":{"type":"main-collection-banner","disabled":true,"custom_css":["h1 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 52px); max-width: 55%; margin: auto; line-height: 100%; margin-top: -10px; mix-blend-mode: darken; text-align: center; margin-bottom: 100px; margin-top: 140px;}"],"settings":{"background_image":"shopify:\/\/shop_images\/elementare_hero2.jpg","background_position":"center","overlay_opacity":0,"show_collection_description":false,"show_collection_image":false,"color_scheme":"scheme-1"}},"image_banner_ER3jmW":{"type":"image-banner","blocks":{"heading_TYNC6t":{"type":"heading","settings":{"heading":"Personalizza la divisa della tua scuola!","heading_size":"h0"}},"text_i6FLbr":{"type":"text","settings":{"text":"<p>Il Grembiulino.com ti permette di personalizzare\u2028oltre 20 modelli di divise scolastiche con il logo della tua scuola.<br\/><strong>Scopri le scuole che ci hanno già scelto!<\/strong><\/p>","text_style":"body"}}},"block_order":["heading_TYNC6t","text_i6FLbr"],"custom_css":["* {color: white; text-wrap: balance;}","h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 64px); max-width: 75%; margin: 60px auto; line-height: 105%; padding-bottom: 20px;}","p {max-width: 60%; margin: 20px auto;}","strong {display: block; padding-top: 20px; font-size: 1.2em;}","@media (max-width: 768px) {h2 {margin-top: 50px !important; } p {max-width: 100%; }}"],"name":"Banner immagine","settings":{"image":"shopify:\/\/shop_images\/Hero_blu_bianco.svg","image_overlay_opacity":0,"image_height":"adapt","desktop_content_position":"top-center","desktop_content_alignment":"center","mobile_content_alignment":"center","mobile_content_position":"top","show_text_box":false,"show_text_below":false}},"multicolumn_bgWBaD":{"type":"multicolumn","blocks":{"column_TRcepW":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/Istituto_EleonaraDuse.png","title":"Istituto Comprensivo \"Eleonora Duse\" Plesso San Girolamo","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-comprensivo-eleonora-duse-plesso-san-girolamo"}},"column_dP6qey":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/Istituto_EleonaraDuse.png","title":"Istituto Comprensivo \"Eleonora Duse\" Plesso Salvati ","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-comprensivo-eleonora-duse-plesso-salvati"}},"column_hA9bjM":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/Istituto_EleonaraDuse.png","title":"Istituto Comprensivo \"Eleonora Duse\" Plesso Marconi","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-comprensivo-eleonora-duse-plesso-marconi"}},"column_8gykCk":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/Istituto_EleonaraDuse.png","title":"Istituto Comprensivo \"Eleonora Duse\" Plesso S.G. Don Bosco","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-comprensivo-eleonora-duse-plesso-s-g-don-bosco"}},"column_eJGCii":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/Istituto_Grimaldi_Lombardia.png","title":"Istituto Comprensivo B. Grimaldi - L. Lombardi","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-comprensivo-b-grimaldi-l-lombardi"}},"column_8qVNmN":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/Istituto_Merloni.png","title":"Istituto Madre Clelia Merloni","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-madre-clelia-merloni"}},"column_yWpfRL":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/NicoloPiccinni.jpg","title":"Scuola Primaria \"Niccolò Piccinni\"","text":"","link_label":"","link":"shopify:\/\/collections\/scuola-primaria-niccolo-piccinni"}},"column_ewbkVg":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/CLevi.jpg","title":"Istituto Comprensivo Statale - “Perone - C. Levi” ","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-comprensivo-statale-perone-c-levi"}},"column_BpRpWG":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/DonMilani.jpg","title":"Scuola Primaria \"Don Milani\"","text":"","link_label":"","link":"shopify:\/\/collections\/scuola-primaria-don-milani"}},"column_CHrnhE":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/SanGiovanni.jpg","title":"1^ Circolo Didattico Statale San Giovanni Bosco ","text":"","link_label":"","link":"shopify:\/\/collections\/1-circolo-didattico-statale-san-giovanni-bosco"}},"column_K7GLF9":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/FalconeBorsellino.jpg","title":"Istituto Comprensivo \"Falcone e Borsellino\"","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-comprensivo-falcone-e-borsellino"}},"column_38NHmJ":{"type":"column","settings":{"image":"shopify:\/\/shop_images\/Istituto_Margherita_-_Logo.png","title":"Istituto Margherita","text":"","link_label":"","link":"shopify:\/\/collections\/istituto-margherita"}}},"block_order":["column_TRcepW","column_dP6qey","column_hA9bjM","column_8gykCk","column_eJGCii","column_8qVNmN","column_yWpfRL","column_ewbkVg","column_BpRpWG","column_CHrnhE","column_K7GLF9","column_38NHmJ"],"custom_css":["{text-align: center;}",".multicolumn-card__image-wrapper {width: 60%; margin: 0 auto;}",".title-wrapper-with-link {justify-content: center;}"],"name":"t:sections.multicolumn.presets.name","settings":{"title":"","heading_size":"h1","background_position":"center","image_width":"full","image_ratio":"square","button_label":"","button_link":"","columns_desktop":4,"column_alignment":"left","background_style":"none","color_scheme":"scheme-1","columns_mobile":"1","swipe_on_mobile":true,"padding_top":36,"padding_bottom":100}},"image_banner_K7Dt97":{"type":"image-banner","blocks":{"text_tfeQDW":{"type":"text","settings":{"text":"<p><strong>TUTTI I MODELLI SCELTI DALLE SCUOLE<\/strong><\/p>","text_style":"body"}},"heading_FPrngy":{"type":"heading","settings":{"heading":"Acquista la divisa scolastica neutra!","heading_size":"h1"}},"buttons_WhkcaQ":{"type":"buttons","settings":{"button_label_1":"Richiedi informazioni","button_link_1":"#contact-form-section","button_style_secondary_1":false,"button_label_2":"","button_link_2":"","button_style_secondary_2":false}}},"block_order":["text_tfeQDW","heading_FPrngy","buttons_WhkcaQ"],"custom_css":["* {color: white;}","h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 64px); margin: auto; line-height: 100%; margin-top: -10px; mix-blend-mode: darken; text-align: center; margin-bottom: 50px; margin-top: 20px;}","p {transform: skewY(-7deg);}","@media (max-width: 768px) {h2 {margin-top: 50px !important; } .button {margin-bottom: 180px; }}"],"name":"Banner immagine","settings":{"image":"shopify:\/\/shop_images\/BG_blu1.svg","image_overlay_opacity":0,"image_height":"small","desktop_content_position":"middle-center","desktop_content_alignment":"center","mobile_content_alignment":"center","mobile_content_position":"middle","show_text_box":false,"show_text_below":false}},"product-grid":{"type":"main-collection-product-grid","custom_css":["h3 {font-family: \"Figtree\", sans-serif; font-size: clamp(12px, 6vw, 16px); font-weight: 300 !important; padding-right: 30px; padding-bottom: 10px;}","form,form h2,form span,form svg,form select {color: white !important;}"],"settings":{"products_per_page":36,"columns_desktop":3,"columns_mobile":"1","color_scheme":"scheme-1","background_image":"shopify:\/\/shop_images\/BG_blu2_f33e95b6-b43c-42a5-94f5-fc5813fd019c.svg","background_position":"top","overlay_opacity":0,"enable_gender_filter":false,"female_label":"BIMBA","male_label":"BIMBO","female_color":"#f51175","male_color":"#b1b1f7","image_ratio":"portrait","image_shape":"default","show_secondary_image":false,"show_vendor":false,"show_rating":false,"quick_add":"none","enable_filtering":true,"filter_type":"horizontal","enable_sorting":true,"padding_top":36,"padding_bottom":36}},"contact_form_XACUCh":{"type":"contact-form","custom_css":["h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 52px); max-width: 75%; margin: 120px auto; text-align: center; color: white !important;}","p {transform: skewY(-7deg);}",".button {margin-bottom: 60px;}","@media (max-width: 768px) {h2 {margin-top: 50px !important; } .button {margin-bottom: 180px; }}"],"name":"t:sections.contact-form.presets.name","settings":{"heading":"Richiedi info per la tua scuola","heading_size":"h1","color_scheme":"scheme-0cf39677-6a4a-4838-96c1-a7b15ded3ce5","padding_top":36,"padding_bottom":36}}},"order":["banner","image_banner_ER3jmW","multicolumn_bgWBaD","image_banner_K7Dt97","product-grid","contact_form_XACUCh"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "custom_css": [
+        "h1 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 52px); max-width: 55%; margin: auto; line-height: 100%; margin-top: -10px; mix-blend-mode: darken; text-align: center; margin-bottom: 100px; margin-top: 140px;}"
+      ],
+      "settings": {
+        "background_image": "shopify://shop_images/elementare_hero2.jpg",
+        "background_position": "center",
+        "overlay_opacity": 0,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image_banner_ER3jmW": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_TYNC6t": {
+          "type": "heading",
+          "settings": {
+            "heading": "Personalizza la divisa della tua scuola!",
+            "heading_size": "h0"
+          }
+        },
+        "text_i6FLbr": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Il Grembiulino.com ti permette di personalizzare oltre 20 modelli di divise scolastiche con il logo della tua scuola.<br/><strong>Scopri le scuole che ci hanno già scelto!</strong></p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TYNC6t",
+        "text_i6FLbr"
+      ],
+      "custom_css": [
+        "* {color: white; text-wrap: balance;}",
+        "h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 64px); max-width: 75%; margin: 60px auto; line-height: 105%; padding-bottom: 20px;}",
+        "p {max-width: 60%; margin: 20px auto;}",
+        "strong {display: block; padding-top: 20px; font-size: 1.2em;}",
+        "@media (max-width: 768px) {h2 {margin-top: 50px !important; } p {max-width: 100%; }}"
+      ],
+      "name": "Banner immagine",
+      "settings": {
+        "image": "shopify://shop_images/Hero_blu_bianco.svg",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "top-center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "mobile_content_position": "top",
+        "show_text_box": false,
+        "show_text_below": false
+      }
+    },
+    "multicolumn_bgWBaD": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_TRcepW": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Istituto_EleonaraDuse.png",
+            "title": "Istituto Comprensivo \"Eleonora Duse\" Plesso San Girolamo",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-comprensivo-eleonora-duse-plesso-san-girolamo"
+          }
+        },
+        "column_dP6qey": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Istituto_EleonaraDuse.png",
+            "title": "Istituto Comprensivo \"Eleonora Duse\" Plesso Salvati ",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-comprensivo-eleonora-duse-plesso-salvati"
+          }
+        },
+        "column_hA9bjM": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Istituto_EleonaraDuse.png",
+            "title": "Istituto Comprensivo \"Eleonora Duse\" Plesso Marconi",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-comprensivo-eleonora-duse-plesso-marconi"
+          }
+        },
+        "column_8gykCk": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Istituto_EleonaraDuse.png",
+            "title": "Istituto Comprensivo \"Eleonora Duse\" Plesso S.G. Don Bosco",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-comprensivo-eleonora-duse-plesso-s-g-don-bosco"
+          }
+        },
+        "column_eJGCii": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Istituto_Grimaldi_Lombardia.png",
+            "title": "Istituto Comprensivo B. Grimaldi - L. Lombardi",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-comprensivo-b-grimaldi-l-lombardi"
+          }
+        },
+        "column_8qVNmN": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Istituto_Merloni.png",
+            "title": "Istituto Madre Clelia Merloni",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-madre-clelia-merloni"
+          }
+        },
+        "column_yWpfRL": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/NicoloPiccinni.jpg",
+            "title": "Scuola Primaria \"Niccolò Piccinni\"",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/scuola-primaria-niccolo-piccinni"
+          }
+        },
+        "column_ewbkVg": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/CLevi.jpg",
+            "title": "Istituto Comprensivo Statale - “Perone - C. Levi” ",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-comprensivo-statale-perone-c-levi"
+          }
+        },
+        "column_BpRpWG": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/DonMilani.jpg",
+            "title": "Scuola Primaria \"Don Milani\"",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/scuola-primaria-don-milani"
+          }
+        },
+        "column_CHrnhE": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/S_Giovanni_Bosco_blue.svg",
+            "title": "1^ Circolo Didattico Statale San Giovanni Bosco ",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/1-circolo-didattico-statale-san-giovanni-bosco"
+          }
+        },
+        "column_K7GLF9": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/FalconeBorsellino.jpg",
+            "title": "Istituto Comprensivo \"Falcone e Borsellino\"",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-comprensivo-falcone-e-borsellino"
+          }
+        },
+        "column_38NHmJ": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Istituto_Margherita_-_Logo.png",
+            "title": "Istituto Margherita",
+            "text": "",
+            "link_label": "",
+            "link": "shopify://collections/istituto-margherita"
+          }
+        }
+      },
+      "block_order": [
+        "column_TRcepW",
+        "column_dP6qey",
+        "column_hA9bjM",
+        "column_8gykCk",
+        "column_eJGCii",
+        "column_8qVNmN",
+        "column_yWpfRL",
+        "column_ewbkVg",
+        "column_BpRpWG",
+        "column_CHrnhE",
+        "column_K7GLF9",
+        "column_38NHmJ"
+      ],
+      "custom_css": [
+        "{text-align: center;}",
+        ".multicolumn-card__image-wrapper {width: 60%; margin: 0 auto;}",
+        ".title-wrapper-with-link {justify-content: center;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "background_position": "center",
+        "image_width": "full",
+        "image_ratio": "square",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 4,
+        "column_alignment": "left",
+        "background_style": "none",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 100
+      }
+    },
+    "image_banner_K7Dt97": {
+      "type": "image-banner",
+      "blocks": {
+        "text_tfeQDW": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>TUTTI I MODELLI SCELTI DALLE SCUOLE</strong></p>",
+            "text_style": "body"
+          }
+        },
+        "heading_FPrngy": {
+          "type": "heading",
+          "settings": {
+            "heading": "Acquista la divisa scolastica neutra!",
+            "heading_size": "h1"
+          }
+        },
+        "buttons_WhkcaQ": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Richiedi informazioni",
+            "button_link_1": "#contact-form-section",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "text_tfeQDW",
+        "heading_FPrngy",
+        "buttons_WhkcaQ"
+      ],
+      "custom_css": [
+        "* {color: white;}",
+        "h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 64px); margin: auto; line-height: 100%; margin-top: -10px; mix-blend-mode: darken; text-align: center; margin-bottom: 50px; margin-top: 20px;}",
+        "p {transform: skewY(-7deg);}",
+        "@media (max-width: 768px) {h2 {margin-top: 50px !important; } .button {margin-bottom: 180px; }}"
+      ],
+      "name": "Banner immagine",
+      "settings": {
+        "image": "shopify://shop_images/BG_blu1.svg",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "mobile_content_position": "middle",
+        "show_text_box": false,
+        "show_text_below": false
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "custom_css": [
+        "h3 {font-family: \"Figtree\", sans-serif; font-size: clamp(12px, 6vw, 16px); font-weight: 300 !important; padding-right: 30px; padding-bottom: 10px;}",
+        "form,form h2,form span,form svg,form select {color: white !important;}"
+      ],
+      "settings": {
+        "products_per_page": 36,
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "color_scheme": "scheme-1",
+        "background_image": "shopify://shop_images/BG_blu2_f33e95b6-b43c-42a5-94f5-fc5813fd019c.svg",
+        "background_position": "top",
+        "overlay_opacity": 0,
+        "enable_gender_filter": false,
+        "female_label": "BIMBA",
+        "male_label": "BIMBO",
+        "female_color": "#f51175",
+        "male_color": "#b1b1f7",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "contact_form_XACUCh": {
+      "type": "contact-form",
+      "custom_css": [
+        "h2 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 52px); max-width: 75%; margin: 120px auto; text-align: center; color: white !important;}",
+        "p {transform: skewY(-7deg);}",
+        ".button {margin-bottom: 60px;}",
+        "@media (max-width: 768px) {h2 {margin-top: 50px !important; } .button {margin-bottom: 180px; }}"
+      ],
+      "name": "t:sections.contact-form.presets.name",
+      "settings": {
+        "heading": "Richiedi info per la tua scuola",
+        "heading_size": "h1",
+        "color_scheme": "scheme-0cf39677-6a4a-4838-96c1-a7b15ded3ce5",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "image_banner_ER3jmW",
+    "multicolumn_bgWBaD",
+    "image_banner_K7Dt97",
+    "product-grid",
+    "contact_form_XACUCh"
+  ]
+}
