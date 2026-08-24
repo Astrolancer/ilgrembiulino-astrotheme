@@ -1,1 +1,63 @@
-{"sections":{"banner":{"type":"main-collection-banner","custom_css":["h1 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 64px); max-width: 75%; margin: 150px auto; line-height: 120%; text-align: center; color: white;}"],"settings":{"background_image":"shopify:\/\/shop_images\/BG_blu1.svg","background_position":"center","overlay_opacity":0,"show_collection_description":false,"show_collection_image":false,"color_scheme":"scheme-1"}},"product-grid":{"type":"main-collection-product-grid","custom_css":["h3 {font-family: \"Figtree\", sans-serif; font-size: clamp(12px, 6vw, 16px); font-weight: 300 !important; padding-bottom: 10px;}","details[data-index=\"4\"] {display: none;}"],"settings":{"products_per_page":36,"columns_desktop":3,"columns_mobile":"1","color_scheme":"scheme-1","background_image":"shopify:\/\/shop_images\/BG_blu3_43a3cbac-2ae0-4f82-a825-6450769c0942.svg","background_position":"top","overlay_opacity":0,"enable_gender_filter":true,"female_label":"BAMBINA","male_label":"BAMBINO","female_color":"#fc0bc6","male_color":"#0695c5","image_ratio":"square","image_shape":"default","show_secondary_image":false,"show_vendor":false,"show_rating":false,"quick_add":"none","enable_filtering":true,"filter_type":"horizontal","enable_sorting":true,"padding_top":36,"padding_bottom":36}}},"order":["banner","product-grid"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "custom_css": [
+        "h1 {transform: skewY(-7deg) !important; font-family: \"Playwrite IT Moderna\", cursive; letter-spacing: -2px; font-feature-settings: \"liga\" 1, \"calt\" 1; font-variant-ligatures: common-ligatures contextual; font-size: clamp(38px, 6vw, 64px); max-width: 75%; margin: 150px auto; line-height: 120%; text-align: center; color: white;}"
+      ],
+      "settings": {
+        "background_image": "shopify://shop_images/BG_blu1.svg",
+        "background_position": "center",
+        "overlay_opacity": 0,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "custom_css": [
+        "h3 {font-family: \"Figtree\", sans-serif; font-size: clamp(12px, 6vw, 16px); font-weight: 300 !important; padding-bottom: 10px;}",
+        "details[data-index=\"4\"] {display: none;}"
+      ],
+      "settings": {
+        "products_per_page": 36,
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "color_scheme": "scheme-1",
+        "background_image": "shopify://shop_images/BG_blu3_43a3cbac-2ae0-4f82-a825-6450769c0942.svg",
+        "background_position": "top",
+        "overlay_opacity": 0,
+        "enable_gender_filter": true,
+        "female_label": "BAMBINA",
+        "male_label": "BAMBINO",
+        "female_color": "#fc0bc6",
+        "male_color": "#0695c5",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid"
+  ]
+}
