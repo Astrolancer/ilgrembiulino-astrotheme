@@ -1728,6 +1728,11 @@
         "Felpa blu con zip, estiva bimbo/bimba",
       ],
       url: 'https://cdn.shopify.com/s/files/1/0560/4596/1267/files/Felpa_RETRO_PICCINNI_invernale_estiva_bimbo_-_blu.png?v=1787651104',
+      {%- comment -%}
+        Il logo e' gia' stampato sul retro: sul fronte non va ricamato nulla.
+        La scuola resta comunque selezionata, cambia solo cosa si vede.
+      {%- endcomment -%}
+      hidePatch: true,
     },
   ];
 
@@ -1866,7 +1871,9 @@
 
   function renderSchoolPatchOverlay(handle) {
     const targets = document.querySelectorAll('.product__media-school-patch-applicate');
-    const imageUrl = handle ? getSchoolPatchUrl(handle) : null;
+    const backRule = handle ? findSchoolBackRule(handle) : null;
+    const patchHidden = Boolean(backRule && backRule.hidePatch);
+    const imageUrl = handle && !patchHidden ? getSchoolPatchUrl(handle) : null;
     const variant = handle && findSchoolPatchOverride(handle) ? 'override' : 'default';
 
     targets.forEach(function (target) {
