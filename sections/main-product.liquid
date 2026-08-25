@@ -1708,6 +1708,157 @@
     return override ? override.url : SCHOOL_PATCH_MAP[handle];
   }
 
+  {%- comment -%}
+    Retro brandizzato. Per certe combinazioni scuola + prodotto la media del
+    retro viene sostituita con un'immagine gia' stampata e promossa in prima
+    posizione. L'immagine specifica della scuola NON sta nelle media di
+    prodotto (sarebbe condivisa da tutte le scuole e visibile in hover nelle
+    griglie collection): sta nei File e viene iniettata solo qui.
+
+    Niente viene rimosso: l'originale resta negli attributi data-school-original-*
+    e torna al suo posto al cambio scuola, se la scuola non ha regole, o al reload.
+  {%- endcomment -%}
+  const SCHOOL_BACK_MEDIA = [
+    {
+      schools: ["scuola-primaria-niccolo-piccinni"],
+      productTitles: [
+        "Felpe Adulto blu con zip, invernale",
+        "Felpe Adulto blu con zip, estivo",
+        "Felpa blu con zip, invernale bimbo/bimba",
+        "Felpa blu con zip, estiva bimbo/bimba",
+      ],
+      url: 'https://cdn.shopify.com/s/files/1/0560/4596/1267/files/Felpa_RETRO_PICCINNI_invernale_estiva_bimbo_-_blu.png?v=1787651104',
+    },
+  ];
+
+  const SCHOOL_BACK_WIDTHS = [400, 600, 800, 1100, 1387];
+
+  let schoolBackApplying = false;
+  let schoolInitialFirstMediaId = null;
+
+  function schoolNormalize(value) {
+    return (value || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  }
+
+  function findSchoolBackRule(handle) {
+    if (!handle) return null;
+    const title = schoolNormalize(SCHOOL_PRODUCT_TITLE);
+    return SCHOOL_BACK_MEDIA.find(function (rule) {
+      return rule.schools.includes(handle)
+        && rule.productTitles.some(function (candidate) {
+          return schoolNormalize(candidate) === title;
+        });
+    }) || null;
+  }
+
+  {%- comment -%}
+    Individua lo slide del retro: prima per alt text, con fallback sulla
+    seconda media. Una volta trovato viene marcato, cosi' le chiamate
+    successive non dipendono piu' dall'ordine (che cambia dopo il prepend).
+  {%- endcomment -%}
+  function getSchoolBackSlot() {
+    const gallery = document.querySelector('media-gallery');
+    const viewer = gallery && gallery.querySelector('ul');
+    if (!viewer) return null;
+
+    const marked = viewer.querySelector('li[data-school-back-slot]');
+    if (marked) return { gallery: gallery, item: marked };
+
+    const items = Array.from(viewer.querySelectorAll('li[data-media-id]'));
+    if (items.length === 0) return null;
+
+    const byAlt = items.find(function (item) {
+      const img = item.querySelector('img');
+      return img && /retro/i.test(img.getAttribute('alt') || '');
+    });
+
+    const item = byAlt || items[1] || null;
+    if (!item) return null;
+
+    item.dataset.schoolBackSlot = '';
+    return { gallery: gallery, item: item };
+  }
+
+  function swapSchoolImage(img, url) {
+    if (!img) return;
+    if (!('schoolOriginalSrc' in img.dataset)) {
+      img.dataset.schoolOriginalSrc = img.getAttribute('src') || '';
+      img.dataset.schoolOriginalSrcset = img.getAttribute('srcset') || '';
+    }
+    img.setAttribute('src', url + '&width=1100');
+    img.setAttribute('srcset', SCHOOL_BACK_WIDTHS.map(function (width) {
+      return url + '&width=' + width + ' ' + width + 'w';
+    }).join(', '));
+  }
+
+  function restoreSchoolImage(img) {
+    if (!img || !('schoolOriginalSrc' in img.dataset)) return;
+    img.setAttribute('src', img.dataset.schoolOriginalSrc);
+    if (img.dataset.schoolOriginalSrcset) {
+      img.setAttribute('srcset', img.dataset.schoolOriginalSrcset);
+    } else {
+      img.removeAttribute('srcset');
+    }
+  }
+
+  function applySchoolBackMedia(handle) {
+    const slot = getSchoolBackSlot();
+    if (!slot) return;
+
+    {%- comment -%}
+      Va memorizzata qui, prima di qualsiasi prepend: autoCheckSchool avvia il
+      suo poll prima di initSchoolPatchOverlay, quindi puo' gia' aver promosso
+      il retro quando init parte, e l'ordine "originale" risulterebbe falsato.
+    {%- endcomment -%}
+    if (!schoolInitialFirstMediaId) {
+      const firstMedia = slot.gallery.querySelector('ul li[data-media-id]');
+      if (firstMedia) schoolInitialFirstMediaId = firstMedia.dataset.mediaId;
+    }
+
+    const rule = findSchoolBackRule(handle);
+    const mediaId = slot.item.dataset.mediaId;
+    const slideImg = slot.item.querySelector('img');
+    const thumbImg = document.querySelector('.thumbnail-list [data-target="' + mediaId + '"] img');
+    const canSwitch = typeof slot.gallery.setActiveMedia === 'function';
+
+    schoolBackApplying = true;
+
+    if (rule) {
+      swapSchoolImage(slideImg, rule.url);
+      swapSchoolImage(thumbImg, rule.url);
+      slot.item.dataset.schoolBackActive = '';
+      if (canSwitch) slot.gallery.setActiveMedia(mediaId, true);
+    } else if ('schoolBackActive' in slot.item.dataset) {
+      restoreSchoolImage(slideImg);
+      restoreSchoolImage(thumbImg);
+      delete slot.item.dataset.schoolBackActive;
+      if (canSwitch && schoolInitialFirstMediaId) {
+        slot.gallery.setActiveMedia(schoolInitialFirstMediaId, true);
+      }
+    }
+
+    {%- comment -%}
+      Il reset e' asincrono di proposito: i callback di MutationObserver girano
+      come microtask, quindi con un reset sincrono l'observer vedrebbe gia'
+      false e reagirebbe alle mutazioni provocate da questa stessa funzione.
+    {%- endcomment -%}
+    window.setTimeout(function () { schoolBackApplying = false; }, 0);
+  }
+
+  {%- comment -%}
+    Al cambio variante product-info puo' ricostruire la lista media,
+    perdendo swap e ordine: qui la si riallinea.
+  {%- endcomment -%}
+  function watchSchoolMediaGallery() {
+    const list = document.querySelector('media-gallery ul');
+    if (!list) return;
+
+    new MutationObserver(function () {
+      if (schoolBackApplying) return;
+      syncSchoolPatchOverlay();
+    }).observe(list, { childList: true });
+  }
+
   const SCHOOL_PLESSO_INPUT_NAME = 'ymq[Plesso selezionato]';
   const SCHOOL_VALUE_TO_HANDLE_MAP = Object.fromEntries(
     Object.entries(SCHOOL_MAP).map(([handle, value]) => [value, handle])
@@ -1740,13 +1891,12 @@
 
   function syncSchoolPatchOverlay() {
     const selectedInput = document.querySelector(`input[name="${SCHOOL_PLESSO_INPUT_NAME}"]:checked`);
-    if (!selectedInput) {
-      renderSchoolPatchOverlay(null);
-      return;
-    }
+    const schoolHandle = selectedInput
+      ? SCHOOL_VALUE_TO_HANDLE_MAP[selectedInput.value] || null
+      : null;
 
-    const schoolHandle = SCHOOL_VALUE_TO_HANDLE_MAP[selectedInput.value];
-    renderSchoolPatchOverlay(schoolHandle || null);
+    renderSchoolPatchOverlay(schoolHandle);
+    applySchoolBackMedia(schoolHandle);
   }
 
   function updatePlessoVisibility() {
@@ -1774,6 +1924,9 @@
       const inputs = document.querySelectorAll(`input[name="${SCHOOL_PLESSO_INPUT_NAME}"]`);
       if (inputs.length > 0) {
         clearInterval(poll);
+
+        watchSchoolMediaGallery();
+
         inputs.forEach(function (input) {
           input.addEventListener('change', function () {
             syncSchoolPatchOverlay();
