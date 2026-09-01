@@ -16,6 +16,7 @@
       "blocks": {
         "announcement-bar-1": {
           "type": "announcement",
+          "disabled": true,
           "settings": {
             "text": "🌊 Gli ordini effettuati dal 10 al 16 agosto compresi saranno evasi a partire dal 17 agosto.Grazie per la pazienza e buone vacanze! 🏖️",
             "link": "shopify://collections/all"
@@ -88,6 +89,7 @@
     },
     "promo_popup": {
       "type": "promo-popup",
+      "disabled": true,
       "settings": {
         "enable": true,
         "kicker": "SUMMER PROMO · FINO AL 31 AGOSTO",
