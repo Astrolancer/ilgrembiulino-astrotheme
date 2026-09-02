@@ -24,6 +24,7 @@
         },
         "announcement_7VAj4D": {
           "type": "announcement",
+          "disabled": true,
           "settings": {
             "text": "🌊 Summer promo sui grembiuli neutri! Solo fino al 31 agosto",
             "link": "shopify://collections/all"
@@ -31,7 +32,6 @@
         },
         "announcement-bar-0": {
           "type": "announcement",
-          "disabled": true,
           "settings": {
             "text": "Promossi in convenienza! Consegna omaggio con una spesa minima di 99,99€.",
             "link": ""
