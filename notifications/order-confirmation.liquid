@@ -278,21 +278,40 @@
 
                               {%- comment -%} ---- Personalizzazioni (proprietà di riga, plugin Ymq) ---- {%- endcomment -%}
                               {%- assign props_line = line -%}
+                              {%- comment -%}
+                                Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                                le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                                e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                                inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                                Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                              {%- endcomment -%}
                               {%- capture props_html -%}
                                 {%- for property in props_line.properties -%}
-                                  {%- assign property_first_char = property.first | slice: 0 -%}
-                                  {%- if property.last != blank and property_first_char != '_' -%}
-                                    {%- assign prop_label = property.first | strip | remove: '!' -%}
+                                  {%- assign prop_key = property.first -%}
+                                  {%- assign prop_val = property.last -%}
+                                  {%- assign prop_show = true -%}
+                                  {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                                  {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                                  {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                                  {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                                  {%- if prop_show -%}
+                                    {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                    {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                    {%- assign prop_label = prop_key | strip | remove: '!' -%}
                                     {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                    {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                    {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
                                     {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                    {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                    {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
                                     {%- endif -%}
                                     <tr>
                                       <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
                                       <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
-                                        {%- if property.last contains '/uploads/' -%}
-                                          <a href="{{ property.last }}" target="_blank" style="color:{{ c_blue_light }};">{{ property.last | split: '/' | last }}</a>
+                                        {%- if prop_val contains '/uploads/' -%}
+                                          <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
                                         {%- else -%}
-                                          {{ property.last | replace: ' | ', ' · ' }}
+                                          {{ prop_val | replace: ' | ', ' · ' }}
                                         {%- endif -%}
                                       </td>
                                     </tr>
@@ -300,6 +319,39 @@
                                 {%- endfor -%}
                               {%- endcapture -%}
                               {%- assign props_html_stripped = props_html | strip -%}
+                              {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                              {%- if props_html_stripped == blank and ymq_info != blank -%}
+                                {%- capture props_html -%}
+                                  {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                                  {%- for pair in ymq_pairs -%}
+                                    {%- assign kv = pair | split: '":"' -%}
+                                    {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                    {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                    {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                    {%- if prop_val != blank and prop_k1 != '_' -%}
+                                    {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                    {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                    {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                    {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                    {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                    {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                    {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                    {%- endif -%}
+                                    <tr>
+                                      <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                      <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                        {%- if prop_val contains '/uploads/' -%}
+                                          <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                        {%- else -%}
+                                          {{ prop_val | replace: ' | ', ' · ' }}
+                                        {%- endif -%}
+                                      </td>
+                                    </tr>
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                {%- endcapture -%}
+                                {%- assign props_html_stripped = props_html | strip -%}
+                              {%- endif -%}
                               {%- if props_html_stripped != blank -%}
                                 <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
                                   <tr>
@@ -357,21 +409,40 @@
                                           <span style="display:block; margin-top:2px; font-size:12px; color:{{ c_muted }};">{{ child_line.variant.title }}</span>
                                         {%- endif -%}
                                         {%- assign props_line = child_line -%}
+                                        {%- comment -%}
+                                          Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                                          le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                                          e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                                          inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                                          Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                                        {%- endcomment -%}
                                         {%- capture props_html -%}
                                           {%- for property in props_line.properties -%}
-                                            {%- assign property_first_char = property.first | slice: 0 -%}
-                                            {%- if property.last != blank and property_first_char != '_' -%}
-                                              {%- assign prop_label = property.first | strip | remove: '!' -%}
+                                            {%- assign prop_key = property.first -%}
+                                            {%- assign prop_val = property.last -%}
+                                            {%- assign prop_show = true -%}
+                                            {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                                            {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                                            {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                                            {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                                            {%- if prop_show -%}
+                                              {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                              {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                              {%- assign prop_label = prop_key | strip | remove: '!' -%}
                                               {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                              {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                              {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
                                               {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                              {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                              {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
                                               {%- endif -%}
                                               <tr>
                                                 <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
                                                 <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
-                                                  {%- if property.last contains '/uploads/' -%}
-                                                    <a href="{{ property.last }}" target="_blank" style="color:{{ c_blue_light }};">{{ property.last | split: '/' | last }}</a>
+                                                  {%- if prop_val contains '/uploads/' -%}
+                                                    <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
                                                   {%- else -%}
-                                                    {{ property.last | replace: ' | ', ' · ' }}
+                                                    {{ prop_val | replace: ' | ', ' · ' }}
                                                   {%- endif -%}
                                                 </td>
                                               </tr>
@@ -379,6 +450,39 @@
                                           {%- endfor -%}
                                         {%- endcapture -%}
                                         {%- assign props_html_stripped = props_html | strip -%}
+                                        {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                                        {%- if props_html_stripped == blank and ymq_info != blank -%}
+                                          {%- capture props_html -%}
+                                            {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                                            {%- for pair in ymq_pairs -%}
+                                              {%- assign kv = pair | split: '":"' -%}
+                                              {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                              {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                              {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                              {%- if prop_val != blank and prop_k1 != '_' -%}
+                                              {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                              {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                              {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                              {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                              {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                              {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                              {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                              {%- endif -%}
+                                              <tr>
+                                                <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                                <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                                  {%- if prop_val contains '/uploads/' -%}
+                                                    <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                                  {%- else -%}
+                                                    {{ prop_val | replace: ' | ', ' · ' }}
+                                                  {%- endif -%}
+                                                </td>
+                                              </tr>
+                                              {%- endif -%}
+                                            {%- endfor -%}
+                                          {%- endcapture -%}
+                                          {%- assign props_html_stripped = props_html | strip -%}
+                                        {%- endif -%}
                                         {%- if props_html_stripped != blank -%}
                                           <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
                                             <tr>
@@ -460,58 +564,87 @@
                           <span style="display:block; margin-top:3px; font-size:13px; color:{{ c_muted }};">Quantità: {{ line_item_group.quantity }}</span>
 
                           {%- comment -%} Personalizzazioni: dal parent (se esiste) e, se il gruppo e' compresso, dal componente {%- endcomment -%}
+                          {%- if parent_line_item -%}
+                            {%- assign props_line = parent_line_item -%}
+                          {%- else -%}
+                            {%- assign props_line = first_component -%}
+                          {%- endif -%}
+                          {%- comment -%}
+                            Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                            le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                            e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                            inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                            Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                          {%- endcomment -%}
                           {%- capture props_html -%}
-                            {%- if parent_line_item -%}
-                              {%- for property in parent_line_item.properties -%}
-                                {%- assign property_first_char = property.first | slice: 0 -%}
-                                {%- if property.last != blank and property_first_char != '_' -%}
-                                  {%- assign prop_label = property.first | strip | remove: '!' -%}
-                                  {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
-                                  {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
-                                  {%- endif -%}
-                                  <tr>
-                                    <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
-                                    <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
-                                      {%- if property.last contains '/uploads/' -%}
-                                        <a href="{{ property.last }}" target="_blank" style="color:{{ c_blue_light }};">{{ property.last | split: '/' | last }}</a>
-                                      {%- else -%}
-                                        {{ property.last | replace: ' | ', ' · ' }}
-                                      {%- endif -%}
-                                    </td>
-                                  </tr>
+                            {%- for property in props_line.properties -%}
+                              {%- assign prop_key = property.first -%}
+                              {%- assign prop_val = property.last -%}
+                              {%- assign prop_show = true -%}
+                              {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                              {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                              {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                              {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                              {%- if prop_show -%}
+                                {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
                                 {%- endif -%}
-                              {%- endfor -%}
-                            {%- endif -%}
-                            {%- if collapse_group -%}
-                              {%- for property in first_component.properties -%}
-                                {%- assign property_first_char = property.first | slice: 0 -%}
-                                {%- if property.last != blank and property_first_char != '_' -%}
-                                  {%- assign prop_label = property.first | strip | remove: '!' -%}
-                                  {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
-                                  {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
-                                  {%- endif -%}
-                                  <tr>
-                                    <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
-                                    <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
-                                      {%- if property.last contains '/uploads/' -%}
-                                        <a href="{{ property.last }}" target="_blank" style="color:{{ c_blue_light }};">{{ property.last | split: '/' | last }}</a>
-                                      {%- else -%}
-                                        {{ property.last | replace: ' | ', ' · ' }}
-                                      {%- endif -%}
-                                    </td>
-                                  </tr>
-                                {%- endif -%}
-                              {%- endfor -%}
-                            {%- endif -%}
+                                <tr>
+                                  <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                  <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                    {%- if prop_val contains '/uploads/' -%}
+                                      <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                    {%- else -%}
+                                      {{ prop_val | replace: ' | ', ' · ' }}
+                                    {%- endif -%}
+                                  </td>
+                                </tr>
+                              {%- endif -%}
+                            {%- endfor -%}
                           {%- endcapture -%}
                           {%- assign props_html_stripped = props_html | strip -%}
+                          {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                          {%- if props_html_stripped == blank and ymq_info != blank -%}
+                            {%- capture props_html -%}
+                              {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                              {%- for pair in ymq_pairs -%}
+                                {%- assign kv = pair | split: '":"' -%}
+                                {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                {%- if prop_val != blank and prop_k1 != '_' -%}
+                                {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                {%- endif -%}
+                                <tr>
+                                  <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                  <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                    {%- if prop_val contains '/uploads/' -%}
+                                      <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                    {%- else -%}
+                                      {{ prop_val | replace: ' | ', ' · ' }}
+                                    {%- endif -%}
+                                  </td>
+                                </tr>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            {%- endcapture -%}
+                            {%- assign props_html_stripped = props_html | strip -%}
+                          {%- endif -%}
                           {%- if props_html_stripped != blank -%}
-                            {%- assign addon_price = nil -%}
-                            {%- if collapse_group and first_component.properties['_YmqItemPrice'] != blank -%}
-                              {%- assign addon_price = first_component.properties['_YmqItemPrice'] -%}
-                            {%- elsif parent_line_item and parent_line_item.properties['_YmqItemPrice'] != blank -%}
-                              {%- assign addon_price = parent_line_item.properties['_YmqItemPrice'] -%}
-                            {%- endif -%}
+                            {%- assign addon_price = props_line.properties['_YmqItemPrice'] -%}
                             <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
                               <tr>
                                 <td style="padding:9px 12px 8px 12px;">
@@ -571,21 +704,40 @@
                                       <span style="display:block; margin-top:2px; font-size:12px; color:{{ c_muted }};">{{ component.variant.title }}</span>
                                     {%- endif -%}
                                     {%- assign props_line = component -%}
+                                    {%- comment -%}
+                                      Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                                      le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                                      e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                                      inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                                      Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                                    {%- endcomment -%}
                                     {%- capture props_html -%}
                                       {%- for property in props_line.properties -%}
-                                        {%- assign property_first_char = property.first | slice: 0 -%}
-                                        {%- if property.last != blank and property_first_char != '_' -%}
-                                          {%- assign prop_label = property.first | strip | remove: '!' -%}
+                                        {%- assign prop_key = property.first -%}
+                                        {%- assign prop_val = property.last -%}
+                                        {%- assign prop_show = true -%}
+                                        {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                                        {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                                        {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                                        {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                                        {%- if prop_show -%}
+                                          {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                          {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                          {%- assign prop_label = prop_key | strip | remove: '!' -%}
                                           {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                          {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                          {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
                                           {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                          {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                          {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
                                           {%- endif -%}
                                           <tr>
                                             <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
                                             <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
-                                              {%- if property.last contains '/uploads/' -%}
-                                                <a href="{{ property.last }}" target="_blank" style="color:{{ c_blue_light }};">{{ property.last | split: '/' | last }}</a>
+                                              {%- if prop_val contains '/uploads/' -%}
+                                                <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
                                               {%- else -%}
-                                                {{ property.last | replace: ' | ', ' · ' }}
+                                                {{ prop_val | replace: ' | ', ' · ' }}
                                               {%- endif -%}
                                             </td>
                                           </tr>
@@ -593,6 +745,39 @@
                                       {%- endfor -%}
                                     {%- endcapture -%}
                                     {%- assign props_html_stripped = props_html | strip -%}
+                                    {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                                    {%- if props_html_stripped == blank and ymq_info != blank -%}
+                                      {%- capture props_html -%}
+                                        {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                                        {%- for pair in ymq_pairs -%}
+                                          {%- assign kv = pair | split: '":"' -%}
+                                          {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                          {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                          {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                          {%- if prop_val != blank and prop_k1 != '_' -%}
+                                          {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                          {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                          {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                          {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                          {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                          {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                          {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                          {%- endif -%}
+                                          <tr>
+                                            <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                            <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                              {%- if prop_val contains '/uploads/' -%}
+                                                <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                              {%- else -%}
+                                                {{ prop_val | replace: ' | ', ' · ' }}
+                                              {%- endif -%}
+                                            </td>
+                                          </tr>
+                                          {%- endif -%}
+                                        {%- endfor -%}
+                                      {%- endcapture -%}
+                                      {%- assign props_html_stripped = props_html | strip -%}
+                                    {%- endif -%}
                                     {%- if props_html_stripped != blank -%}
                                       <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
                                         <tr>
