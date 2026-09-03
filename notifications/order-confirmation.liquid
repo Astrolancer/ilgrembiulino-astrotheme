@@ -1,0 +1,1049 @@
+{% comment %}
+  Il Grembiulino – Email di conferma ordine
+  ------------------------------------------------------------
+  Da incollare in: Shopify Admin > Impostazioni > Notifiche >
+  Notifiche cliente > Conferma ordine > Modifica codice.
+
+  Rispetto al template standard di Shopify:
+  - mostra tutte le opzioni scelte con il plugin Ymq Product Options
+    (ricamo del nome, patch, ecc.) sotto ogni articolo, sia sulle righe
+    normali che sulle righe "figlie"/raggruppate create dal plugin;
+  - le proprieta' tecniche del plugin (che iniziano con "_") restano nascoste;
+  - grafica allineata al tema: palette blu/rosa/giallo, font Assistant e
+    Archivo, bottoni a pillola, footer con contatti e social.
+{% endcomment %}
+
+{%- comment -%} ---- Colori e font del brand ---- {%- endcomment -%}
+{%- assign c_text = '#242833' -%}
+{%- assign c_muted = '#6b7080' -%}
+{%- assign c_blue = '#1F3F92' -%}
+{%- assign c_blue_light = '#334fb4' -%}
+{%- assign c_pink = '#f51175' -%}
+{%- assign c_yellow = '#f6cc38' -%}
+{%- assign c_lavender = '#b1b1f7' -%}
+{%- assign c_mint = '#8be1b2' -%}
+{%- assign c_rose = '#f7d1e1' -%}
+{%- assign c_bg = '#f4f4fb' -%}
+{%- assign c_box = '#f5f5fd' -%}
+{%- assign c_line = '#e6e7f2' -%}
+{%- assign f_body = "'Archivo', Helvetica, Arial, sans-serif" -%}
+{%- assign f_head = "'Assistant', Helvetica, Arial, sans-serif" -%}
+
+{%- comment -%} ---- Testi ---- {%- endcomment -%}
+{%- capture email_title -%}
+  {%- if customer.first_name != blank -%}Grazie per il tuo ordine, {{ customer.first_name }}!{%- else -%}Grazie per il tuo ordine!{%- endif -%}
+{%- endcapture -%}
+
+{%- capture email_body -%}
+  {%- if has_pending_payment -%}
+    {%- if buyer_action_required -%}
+      Riceverai un'email di conferma non appena il pagamento sarà completato.
+    {%- else -%}
+      Il tuo pagamento è in fase di elaborazione. Ti scriveremo non appena l'ordine sarà confermato.
+    {%- endif -%}
+  {%- elsif payment_charged_on_fulfillment -%}
+    Abbiamo ricevuto il tuo ordine. L'importo verrà addebitato quando l'ordine sarà pronto per la spedizione. Ti avviseremo quando sarà in viaggio.
+  {%- else -%}
+    {%- if requires_shipping -%}
+      {%- case delivery_method -%}
+        {%- when 'pick-up' -%}
+          Riceverai un'email quando il tuo ordine sarà pronto per il ritiro.
+        {%- when 'local' -%}
+          Stiamo preparando il tuo ordine per la consegna.
+        {%- else -%}
+          Stiamo preparando il tuo ordine con cura. Ti avviseremo non appena sarà spedito.
+      {%- endcase -%}
+    {%- else -%}
+      Abbiamo ricevuto il tuo ordine e lo stiamo elaborando.
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- assign gift_card_line_items = line_items | where: "gift_card" -%}
+{%- assign found_gift_card_with_recipient_email = false -%}
+{%- for line_item in gift_card_line_items -%}
+  {%- if line_item.properties["__shopify_send_gift_card_to_recipient"] and line_item.properties["Recipient email"] -%}
+    {%- assign found_gift_card_with_recipient_email = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} ---- Verifica se le tasse sono incluse nei prezzi (IVA italiana) ---- {%- endcomment -%}
+{%- assign shipping_paid = 0 -%}
+{%- for method in shipping_methods -%}
+  {%- assign shipping_paid = shipping_paid | plus: method.price_with_discounts -%}
+{%- endfor -%}
+{%- if shipping_methods.size == 0 -%}
+  {%- assign shipping_paid = shipping_price -%}
+{%- endif -%}
+{%- assign check_total = subtotal_price | plus: shipping_paid | plus: total_tip | plus: total_duties -%}
+{%- assign taxes_included = false -%}
+{%- if check_total == total_price and tax_price > 0 -%}
+  {%- assign taxes_included = true -%}
+{%- endif -%}
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>{{ email_title }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; padding: 0; background: {{ c_bg }}; -webkit-font-smoothing: antialiased; }
+    table { border-collapse: collapse; }
+    img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+    a { color: {{ c_blue_light }}; }
+    .grem-btn:hover { opacity: .9; }
+    @media only screen and (max-width: 620px) {
+      .grem-container { width: 100% !important; border-radius: 0 !important; }
+      .grem-pad { padding-left: 20px !important; padding-right: 20px !important; }
+      .grem-col { display: block !important; width: 100% !important; padding-right: 0 !important; padding-bottom: 16px !important; }
+      .grem-btn-cell { display: block !important; width: 100% !important; padding: 0 0 12px 0 !important; }
+      .grem-btn-cell a { display: block !important; }
+      .grem-title { font-size: 24px !important; }
+      .grem-props { width: 100% !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background:{{ c_bg }};">
+
+{%- comment -%} Testo di anteprima nella casella di posta {%- endcomment -%}
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:{{ c_bg }};">
+  Ordine {{ order_name }} ricevuto: ecco il riepilogo con tutte le personalizzazioni scelte.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:{{ c_bg }};">
+  <tr>
+    <td align="center" style="padding: 32px 12px;">
+
+      <table role="presentation" class="grem-container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 4px 14px rgba(36,40,51,0.06);">
+
+        {%- comment -%} ---- Striscia colorata brand ---- {%- endcomment -%}
+        <tr>
+          <td style="padding:0; font-size:0; line-height:0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="25%" height="7" style="background:{{ c_blue }}; font-size:0; line-height:0;">&nbsp;</td>
+                <td width="25%" height="7" style="background:{{ c_pink }}; font-size:0; line-height:0;">&nbsp;</td>
+                <td width="25%" height="7" style="background:{{ c_yellow }}; font-size:0; line-height:0;">&nbsp;</td>
+                <td width="25%" height="7" style="background:{{ c_mint }}; font-size:0; line-height:0;">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Header: logo + numero ordine ---- {%- endcomment -%}
+        <tr>
+          <td class="grem-pad" style="padding: 28px 40px 8px 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="middle" style="font-family:{{ f_head }};">
+                  {%- if shop.email_logo_url != blank -%}
+                    <a href="{{ shop.url }}" style="text-decoration:none;">
+                      <img src="{{ shop.email_logo_url }}" alt="{{ shop.name }}" width="{{ shop.email_logo_width | default: 160 }}" style="display:block; width:{{ shop.email_logo_width | default: 160 }}px; max-width:220px; height:auto;">
+                    </a>
+                  {%- else -%}
+                    <a href="{{ shop.url }}" style="font-family:{{ f_head }}; font-size:26px; font-weight:700; color:{{ c_blue }}; text-decoration:none; letter-spacing:-0.01em;">{{ shop.name }}</a>
+                  {%- endif -%}
+                </td>
+                <td valign="middle" align="right" style="font-family:{{ f_body }};">
+                  <span style="display:inline-block; background:{{ c_yellow }}; color:{{ c_text }}; font-family:{{ f_body }}; font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; padding:8px 14px; border-radius:40px; white-space:nowrap;">Ordine {{ order_name }}</span>
+                  {%- if po_number -%}
+                    <br><span style="font-size:11px; color:{{ c_muted }};">N. ordine d'acquisto #{{ po_number }}</span>
+                  {%- endif -%}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Hero ---- {%- endcomment -%}
+        <tr>
+          <td class="grem-pad" style="padding: 20px 40px 8px 40px;">
+            <h1 class="grem-title" style="margin:0 0 12px 0; font-family:{{ f_head }}; font-size:28px; line-height:1.2; font-weight:700; color:{{ c_blue }};">{{ email_title | strip }}</h1>
+            <p style="margin:0; font-family:{{ f_body }}; font-size:15px; line-height:1.6; color:{{ c_text }};">{{ email_body | strip }}</p>
+
+            {%- if delivery_instructions != blank -%}
+              <p style="margin:12px 0 0 0; font-family:{{ f_body }}; font-size:14px; line-height:1.6; color:{{ c_text }};"><strong>Informazioni sulla consegna:</strong> {{ delivery_instructions }}</p>
+            {%- endif -%}
+
+            {%- if consolidated_estimated_delivery_time -%}
+              <p style="margin:12px 0 0 0; font-family:{{ f_body }}; font-size:14px; line-height:1.6; color:{{ c_text }};">Consegna prevista: <strong>{{ consolidated_estimated_delivery_time }}</strong></p>
+            {%- endif -%}
+
+            {%- if found_gift_card_with_recipient_email -%}
+              <p style="margin:12px 0 0 0; font-family:{{ f_body }}; font-size:14px; line-height:1.6; color:{{ c_text }};">Il destinatario del buono regalo riceverà un'email con il relativo codice.</p>
+            {%- elsif gift_card_line_items.first -%}
+              <p style="margin:12px 0 0 0; font-family:{{ f_body }}; font-size:14px; line-height:1.6; color:{{ c_text }};">Riceverai email separate per i buoni regalo.</p>
+            {%- endif -%}
+
+            {%- comment -%} Istruzioni per pagamenti in sospeso (es. bonifico) {%- endcomment -%}
+            {%- for transaction in transactions -%}
+              {%- if transaction.show_buyer_pending_payment_instructions? -%}
+                <p style="margin:16px 0 8px 0; font-family:{{ f_body }}; font-size:14px; line-height:1.6; color:{{ c_text }};">{{ transaction.buyer_pending_payment_notice }}</p>
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:{{ f_body }}; font-size:13px; color:{{ c_text }}; border:1px solid {{ c_line }}; border-radius:8px;">
+                  <tr>
+                    {%- for instruction in transaction.buyer_pending_payment_instructions -%}
+                      <td style="padding:8px 12px; border-bottom:1px solid {{ c_line }}; font-weight:600;">{{ instruction.header }}</td>
+                    {%- endfor -%}
+                    <td style="padding:8px 12px; border-bottom:1px solid {{ c_line }}; font-weight:600;">Importo</td>
+                  </tr>
+                  <tr>
+                    {%- for instruction in transaction.buyer_pending_payment_instructions -%}
+                      <td style="padding:8px 12px;">{{ instruction.value }}</td>
+                    {%- endfor -%}
+                    <td style="padding:8px 12px;">{{ transaction.amount | money }}</td>
+                  </tr>
+                </table>
+              {%- endif -%}
+            {%- endfor -%}
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Bottoni ---- {%- endcomment -%}
+        <tr>
+          <td class="grem-pad" style="padding: 20px 40px 8px 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                {%- if order_status_url -%}
+                  <td class="grem-btn-cell" style="padding:0 12px 0 0;">
+                    <a href="{{ order_status_url }}" class="grem-btn" style="display:inline-block; background:{{ c_pink }}; color:#ffffff; font-family:{{ f_body }}; font-size:14px; font-weight:600; text-decoration:none; padding:14px 26px; border-radius:40px; text-align:center;">Visualizza il tuo ordine</a>
+                  </td>
+                  {%- if shop_app_tracking_url -%}
+                    <td class="grem-btn-cell" style="padding:0;">
+                      <a href="{{ shop_app_tracking_url }}" class="grem-btn" style="display:inline-block; background:#ffffff; color:{{ c_blue }}; font-family:{{ f_body }}; font-size:14px; font-weight:600; text-decoration:none; padding:13px 24px; border-radius:40px; border:1px solid {{ c_blue }}; text-align:center;">Traccia con l'app Shop</a>
+                    </td>
+                  {%- endif -%}
+                {%- else -%}
+                  <td class="grem-btn-cell" style="padding:0;">
+                    <a href="{{ shop.url }}" class="grem-btn" style="display:inline-block; background:{{ c_pink }}; color:#ffffff; font-family:{{ f_body }}; font-size:14px; font-weight:600; text-decoration:none; padding:14px 26px; border-radius:40px; text-align:center;">Visita il nostro negozio</a>
+                  </td>
+                {%- endif -%}
+              </tr>
+            </table>
+            {%- if order_status_url and shop.url -%}
+              <p style="margin:14px 0 0 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }};">oppure <a href="{{ shop.url }}" style="color:{{ c_blue_light }};">torna su {{ shop.name }}</a></p>
+            {%- endif -%}
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Riepilogo ordine ---- {%- endcomment -%}
+        <tr>
+          <td class="grem-pad" style="padding: 28px 40px 0 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding-bottom:6px; border-bottom:2px solid {{ c_blue }};">
+                  <h2 style="margin:0; font-family:{{ f_head }}; font-size:18px; font-weight:700; color:{{ c_blue }}; letter-spacing:0.02em; text-transform:uppercase;">Riepilogo ordine</h2>
+                </td>
+              </tr>
+            </table>
+
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+              {%- comment -%} ===== Righe semplici (non appartenenti a gruppi/bundle) ===== {%- endcomment -%}
+              {%- for line in subtotal_line_items -%}
+                {%- if line.groups.size == 0 -%}
+                  {%- unless line.nested_line_child? -%}
+                    {%- if line.presentment_title -%}
+                      {%- assign line_title = line.presentment_title -%}
+                    {%- elsif line.title -%}
+                      {%- assign line_title = line.title -%}
+                    {%- else -%}
+                      {%- assign line_title = line.product.title -%}
+                    {%- endif -%}
+
+                    <tr>
+                      <td style="padding:18px 0; border-bottom:1px solid {{ c_line }};">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td valign="top" width="72" style="padding-right:16px;">
+                              {%- if line.image -%}
+                                <img src="{{ line | img_url: 'compact_cropped' }}" width="72" height="72" alt="" style="display:block; width:72px; height:72px; border-radius:10px; border:1px solid {{ c_line }};">
+                              {%- else -%}
+                                <div style="width:72px; height:72px; border-radius:10px; background:{{ c_box }}; border:1px solid {{ c_line }};"></div>
+                              {%- endif -%}
+                            </td>
+                            <td valign="top" style="font-family:{{ f_body }}; color:{{ c_text }};">
+                              <span style="display:block; font-family:{{ f_head }}; font-size:15px; font-weight:700; line-height:1.35; color:{{ c_blue }};">{{ line_title }}</span>
+                              {%- if line.variant.title != 'Default Title' and line.variant.title != blank -%}
+                                <span style="display:block; margin-top:3px; font-size:13px; color:{{ c_muted }};">{{ line.variant.title }}</span>
+                              {%- endif -%}
+                              <span style="display:block; margin-top:3px; font-size:13px; color:{{ c_muted }};">Quantità: {{ line.quantity }}</span>
+
+                              {%- if line.selling_plan_allocation -%}
+                                <span style="display:block; margin-top:3px; font-size:13px; color:{{ c_muted }};">{{ line.selling_plan_allocation.selling_plan.name }}</span>
+                              {%- endif -%}
+
+                              {%- comment -%} ---- Personalizzazioni (proprietà di riga, plugin Ymq) ---- {%- endcomment -%}
+                              {%- assign props_line = line -%}
+                              {%- comment -%}
+                                Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                                le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                                e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                                inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                                Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                              {%- endcomment -%}
+                              {%- capture props_html -%}
+                                {%- for property in props_line.properties -%}
+                                  {%- assign prop_key = property.first -%}
+                                  {%- assign prop_val = property.last -%}
+                                  {%- assign prop_show = true -%}
+                                  {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                                  {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                                  {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                                  {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                                  {%- if prop_show -%}
+                                    {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                    {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                    {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                    {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                    {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                    {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                    {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                    {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                    {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                    {%- endif -%}
+                                    <tr>
+                                      <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                      <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                        {%- if prop_val contains '/uploads/' -%}
+                                          <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                        {%- else -%}
+                                          {{ prop_val | replace: ' | ', ' · ' }}
+                                        {%- endif -%}
+                                      </td>
+                                    </tr>
+                                  {%- endif -%}
+                                {%- endfor -%}
+                              {%- endcapture -%}
+                              {%- assign props_html_stripped = props_html | strip -%}
+                              {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                              {%- if props_html_stripped == blank and ymq_info != blank -%}
+                                {%- capture props_html -%}
+                                  {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                                  {%- for pair in ymq_pairs -%}
+                                    {%- assign kv = pair | split: '":"' -%}
+                                    {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                    {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                    {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                    {%- if prop_val != blank and prop_k1 != '_' -%}
+                                    {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                    {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                    {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                    {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                    {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                    {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                    {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                    {%- endif -%}
+                                    <tr>
+                                      <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                      <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                        {%- if prop_val contains '/uploads/' -%}
+                                          <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                        {%- else -%}
+                                          {{ prop_val | replace: ' | ', ' · ' }}
+                                        {%- endif -%}
+                                      </td>
+                                    </tr>
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                {%- endcapture -%}
+                                {%- assign props_html_stripped = props_html | strip -%}
+                              {%- endif -%}
+                              {%- if props_html_stripped != blank -%}
+                                <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
+                                  <tr>
+                                    <td style="padding:9px 12px 8px 12px;">
+                                      <span style="display:block; margin-bottom:4px; font-family:{{ f_body }}; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Personalizzazioni{% if props_line.properties['_YmqItemPrice'] != blank %} · +{{ props_line.properties['_YmqItemPrice'] | times: 100 | round | money }}{% endif %}</span>
+                                      <table role="presentation" cellpadding="0" cellspacing="0" border="0">{{ props_html }}</table>
+                                    </td>
+                                  </tr>
+                                </table>
+                              {%- endif -%}
+
+                              {%- if line.refunded_quantity > 0 -%}
+                                <span style="display:inline-block; margin-top:8px; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:{{ c_pink }};">Rimborsato</span>
+                              {%- endif -%}
+
+                              {%- for discount_allocation in line.discount_allocations -%}
+                                {%- if discount_allocation.discount_application.target_selection != 'all' -%}
+                                  <span style="display:block; margin-top:6px; font-size:12px; color:{{ c_muted }};">Sconto {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})</span>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </td>
+                            <td valign="top" align="right" width="90" style="padding-left:12px; font-family:{{ f_body }}; white-space:nowrap;">
+                              {%- if line.original_line_price != line.final_line_price -%}
+                                <span style="display:block; font-size:12px; color:{{ c_muted }}; text-decoration:line-through;">{{ line.original_line_price | money }}</span>
+                              {%- endif -%}
+                              <span style="display:block; font-size:15px; font-weight:700; color:{{ c_text }};">{% if line.final_line_price > 0 %}{{ line.final_line_price | money }}{% else %}Gratis{% endif %}</span>
+                              {%- if line.unit_price_measurement -%}
+                                <span style="display:block; font-size:11px; color:{{ c_muted }};">{{ line.unit_price | unit_price_with_measurement: line.unit_price_measurement }}</span>
+                              {%- endif -%}
+                            </td>
+                          </tr>
+
+                          {%- comment -%} ---- Righe figlie (add-on annidati) ---- {%- endcomment -%}
+                          {%- if line.nested_line_parent? -%}
+                            {%- for child_line in line.nested_lines -%}
+                              {%- if child_line.product.title -%}
+                                {%- assign child_title = child_line.product.title -%}
+                              {%- else -%}
+                                {%- assign child_title = child_line.title -%}
+                              {%- endif -%}
+                              <tr>
+                                <td colspan="3" style="padding:10px 0 0 88px;">
+                                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                      <td valign="top" width="44" style="padding-right:12px;">
+                                        {%- if child_line.image -%}
+                                          <img src="{{ child_line | img_url: 'compact_cropped' }}" width="44" height="44" alt="" style="display:block; width:44px; height:44px; border-radius:8px; border:1px solid {{ c_line }};">
+                                        {%- else -%}
+                                          <div style="width:44px; height:44px; border-radius:8px; background:{{ c_box }}; border:1px solid {{ c_line }};"></div>
+                                        {%- endif -%}
+                                      </td>
+                                      <td valign="top" style="font-family:{{ f_body }}; color:{{ c_text }};">
+                                        <span style="display:block; font-size:13px; font-weight:600; color:{{ c_text }};">{{ child_title }} &times; {{ child_line.quantity }}</span>
+                                        {%- if child_line.variant.title != 'Default Title' and child_line.variant.title != blank -%}
+                                          <span style="display:block; margin-top:2px; font-size:12px; color:{{ c_muted }};">{{ child_line.variant.title }}</span>
+                                        {%- endif -%}
+                                        {%- assign props_line = child_line -%}
+                                        {%- comment -%}
+                                          Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                                          le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                                          e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                                          inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                                          Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                                        {%- endcomment -%}
+                                        {%- capture props_html -%}
+                                          {%- for property in props_line.properties -%}
+                                            {%- assign prop_key = property.first -%}
+                                            {%- assign prop_val = property.last -%}
+                                            {%- assign prop_show = true -%}
+                                            {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                                            {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                                            {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                                            {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                                            {%- if prop_show -%}
+                                              {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                              {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                              {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                              {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                              {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                              {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                              {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                              {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                              {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                              {%- endif -%}
+                                              <tr>
+                                                <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                                <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                                  {%- if prop_val contains '/uploads/' -%}
+                                                    <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                                  {%- else -%}
+                                                    {{ prop_val | replace: ' | ', ' · ' }}
+                                                  {%- endif -%}
+                                                </td>
+                                              </tr>
+                                            {%- endif -%}
+                                          {%- endfor -%}
+                                        {%- endcapture -%}
+                                        {%- assign props_html_stripped = props_html | strip -%}
+                                        {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                                        {%- if props_html_stripped == blank and ymq_info != blank -%}
+                                          {%- capture props_html -%}
+                                            {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                                            {%- for pair in ymq_pairs -%}
+                                              {%- assign kv = pair | split: '":"' -%}
+                                              {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                              {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                              {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                              {%- if prop_val != blank and prop_k1 != '_' -%}
+                                              {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                              {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                              {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                              {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                              {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                              {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                              {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                              {%- endif -%}
+                                              <tr>
+                                                <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                                <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                                  {%- if prop_val contains '/uploads/' -%}
+                                                    <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                                  {%- else -%}
+                                                    {{ prop_val | replace: ' | ', ' · ' }}
+                                                  {%- endif -%}
+                                                </td>
+                                              </tr>
+                                              {%- endif -%}
+                                            {%- endfor -%}
+                                          {%- endcapture -%}
+                                          {%- assign props_html_stripped = props_html | strip -%}
+                                        {%- endif -%}
+                                        {%- if props_html_stripped != blank -%}
+                                          <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
+                                            <tr>
+                                              <td style="padding:8px 12px 7px 12px;">
+                                                <span style="display:block; margin-bottom:4px; font-family:{{ f_body }}; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Personalizzazioni{% if props_line.properties['_YmqItemPrice'] != blank %} · +{{ props_line.properties['_YmqItemPrice'] | times: 100 | round | money }}{% endif %}</span>
+                                                <table role="presentation" cellpadding="0" cellspacing="0" border="0">{{ props_html }}</table>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        {%- endif -%}
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            {%- endfor -%}
+                          {%- endif -%}
+                        </table>
+                      </td>
+                    </tr>
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- comment -%} ===== Gruppi (bundle / add-on del plugin Ymq) ===== {%- endcomment -%}
+              {%- for line_item_group in line_item_groups -%}
+                {%- assign final_line_price = 0 -%}
+                {%- assign original_line_price = 0 -%}
+                {%- assign parent_line_item = nil -%}
+                {%- assign group_image_line = nil -%}
+
+                {%- if line_item_group.deliverable? -%}
+                  {%- assign parent_line_item = line_item_group.parent_sales_line_item -%}
+                  {%- assign final_line_price = parent_line_item.final_line_price -%}
+                  {%- assign original_line_price = parent_line_item.original_line_price -%}
+                  {%- assign group_image_line = parent_line_item -%}
+                {%- else -%}
+                  {%- for component in line_item_group.components -%}
+                    {%- assign final_line_price = final_line_price | plus: component.final_line_price -%}
+                    {%- assign original_line_price = original_line_price | plus: component.original_line_price -%}
+                  {%- endfor -%}
+                {%- endif -%}
+
+                {%- comment -%}
+                  Il plugin Ymq crea un gruppo con un solo componente identico al prodotto
+                  (stesso titolo/variante): in quel caso mostriamo una sola riga con le
+                  personalizzazioni del componente, senza ripetere l'articolo.
+                {%- endcomment -%}
+                {%- assign collapse_group = false -%}
+                {%- assign first_component = line_item_group.components.first -%}
+                {%- if line_item_group.deliverable? == false and line_item_group.components.size == 1 -%}
+                  {%- if first_component.variant.id == line_item_group.variant.id or first_component.product.title == line_item_group.display_title or first_component.title == line_item_group.display_title -%}
+                    {%- assign collapse_group = true -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                <tr>
+                  <td style="padding:18px 0; border-bottom:1px solid {{ c_line }};">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td valign="top" width="72" style="padding-right:16px;">
+                          {%- if parent_line_item and parent_line_item.image -%}
+                            <img src="{{ parent_line_item | img_url: 'compact_cropped' }}" width="72" height="72" alt="" style="display:block; width:72px; height:72px; border-radius:10px; border:1px solid {{ c_line }};">
+                          {%- elsif line_item_group.image -%}
+                            <img src="{{ line_item_group | img_url: 'compact_cropped' }}" width="72" height="72" alt="" style="display:block; width:72px; height:72px; border-radius:10px; border:1px solid {{ c_line }};">
+                          {%- elsif collapse_group and first_component.image -%}
+                            <img src="{{ first_component | img_url: 'compact_cropped' }}" width="72" height="72" alt="" style="display:block; width:72px; height:72px; border-radius:10px; border:1px solid {{ c_line }};">
+                          {%- else -%}
+                            <div style="width:72px; height:72px; border-radius:10px; background:{{ c_box }}; border:1px solid {{ c_line }};"></div>
+                          {%- endif -%}
+                        </td>
+                        <td valign="top" style="font-family:{{ f_body }}; color:{{ c_text }};">
+                          <span style="display:block; font-family:{{ f_head }}; font-size:15px; font-weight:700; line-height:1.35; color:{{ c_blue }};">{{ line_item_group.display_title }}</span>
+                          {%- if line_item_group.variant and line_item_group.variant.title != 'Default Title' and line_item_group.variant.title != blank -%}
+                            <span style="display:block; margin-top:3px; font-size:13px; color:{{ c_muted }};">{{ line_item_group.variant.title }}</span>
+                          {%- elsif collapse_group and first_component.variant.title != 'Default Title' and first_component.variant.title != blank -%}
+                            <span style="display:block; margin-top:3px; font-size:13px; color:{{ c_muted }};">{{ first_component.variant.title }}</span>
+                          {%- endif -%}
+                          <span style="display:block; margin-top:3px; font-size:13px; color:{{ c_muted }};">Quantità: {{ line_item_group.quantity }}</span>
+
+                          {%- comment -%} Personalizzazioni: dal parent (se esiste) e, se il gruppo e' compresso, dal componente {%- endcomment -%}
+                          {%- if parent_line_item -%}
+                            {%- assign props_line = parent_line_item -%}
+                          {%- else -%}
+                            {%- assign props_line = first_component -%}
+                          {%- endif -%}
+                          {%- comment -%}
+                            Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                            le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                            e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                            inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                            Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                          {%- endcomment -%}
+                          {%- capture props_html -%}
+                            {%- for property in props_line.properties -%}
+                              {%- assign prop_key = property.first -%}
+                              {%- assign prop_val = property.last -%}
+                              {%- assign prop_show = true -%}
+                              {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                              {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                              {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                              {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                              {%- if prop_show -%}
+                                {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                {%- endif -%}
+                                <tr>
+                                  <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                  <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                    {%- if prop_val contains '/uploads/' -%}
+                                      <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                    {%- else -%}
+                                      {{ prop_val | replace: ' | ', ' · ' }}
+                                    {%- endif -%}
+                                  </td>
+                                </tr>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endcapture -%}
+                          {%- assign props_html_stripped = props_html | strip -%}
+                          {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                          {%- if props_html_stripped == blank and ymq_info != blank -%}
+                            {%- capture props_html -%}
+                              {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                              {%- for pair in ymq_pairs -%}
+                                {%- assign kv = pair | split: '":"' -%}
+                                {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                {%- if prop_val != blank and prop_k1 != '_' -%}
+                                {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                {%- endif -%}
+                                <tr>
+                                  <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                  <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                    {%- if prop_val contains '/uploads/' -%}
+                                      <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                    {%- else -%}
+                                      {{ prop_val | replace: ' | ', ' · ' }}
+                                    {%- endif -%}
+                                  </td>
+                                </tr>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            {%- endcapture -%}
+                            {%- assign props_html_stripped = props_html | strip -%}
+                          {%- endif -%}
+                          {%- if props_html_stripped != blank -%}
+                            {%- assign addon_price = props_line.properties['_YmqItemPrice'] -%}
+                            <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
+                              <tr>
+                                <td style="padding:9px 12px 8px 12px;">
+                                  <span style="display:block; margin-bottom:4px; font-family:{{ f_body }}; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Personalizzazioni{% if addon_price != blank %} · +{{ addon_price | times: 100 | round | money }}{% endif %}</span>
+                                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">{{ props_html }}</table>
+                                </td>
+                              </tr>
+                            </table>
+                          {%- endif -%}
+
+                          {%- if parent_line_item -%}
+                            {%- for discount_allocation in parent_line_item.discount_allocations -%}
+                              {%- if discount_allocation.discount_application.target_selection != 'all' -%}
+                                <span style="display:block; margin-top:6px; font-size:12px; color:{{ c_muted }};">Sconto {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})</span>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- else -%}
+                            {%- for component in line_item_group.components -%}
+                              {%- for discount_allocation in component.discount_allocations -%}
+                                {%- if discount_allocation.discount_application.target_selection != 'all' -%}
+                                  <span style="display:block; margin-top:6px; font-size:12px; color:{{ c_muted }};">Sconto {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})</span>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                        </td>
+                        <td valign="top" align="right" width="90" style="padding-left:12px; font-family:{{ f_body }}; white-space:nowrap;">
+                          {%- if original_line_price != final_line_price -%}
+                            <span style="display:block; font-size:12px; color:{{ c_muted }}; text-decoration:line-through;">{{ original_line_price | money }}</span>
+                          {%- endif -%}
+                          <span style="display:block; font-size:15px; font-weight:700; color:{{ c_text }};">{% if final_line_price > 0 %}{{ final_line_price | money }}{% else %}Gratis{% endif %}</span>
+                        </td>
+                      </tr>
+
+                      {%- comment -%} ---- Componenti del gruppo (solo se non compresso) ---- {%- endcomment -%}
+                      {%- unless collapse_group -%}
+                        {%- for component in line_item_group.components -%}
+                          {%- if component.product.title -%}
+                            {%- assign component_title = component.product.title -%}
+                          {%- else -%}
+                            {%- assign component_title = component.title -%}
+                          {%- endif -%}
+                          <tr>
+                            <td colspan="3" style="padding:10px 0 0 88px;">
+                              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                  <td valign="top" width="44" style="padding-right:12px;">
+                                    {%- if component.image -%}
+                                      <img src="{{ component | img_url: 'compact_cropped' }}" width="44" height="44" alt="" style="display:block; width:44px; height:44px; border-radius:8px; border:1px solid {{ c_line }};">
+                                    {%- else -%}
+                                      <div style="width:44px; height:44px; border-radius:8px; background:{{ c_box }}; border:1px solid {{ c_line }};"></div>
+                                    {%- endif -%}
+                                  </td>
+                                  <td valign="top" style="font-family:{{ f_body }}; color:{{ c_text }};">
+                                    <span style="display:block; font-size:13px; font-weight:600; color:{{ c_text }};">{{ component_title }} &times; {{ component.quantity }}</span>
+                                    {%- if component.variant.title != 'Default Title' and component.variant.title != blank -%}
+                                      <span style="display:block; margin-top:2px; font-size:12px; color:{{ c_muted }};">{{ component.variant.title }}</span>
+                                    {%- endif -%}
+                                    {%- assign props_line = component -%}
+                                    {%- comment -%}
+                                      Proprietà di riga. Il plugin Ymq, quando c'è un add-on a pagamento, salva
+                                      le opzioni sulla riga principale con il prefisso "_" (es. "_Scegli la patch…")
+                                      e sulla riga figlia senza prefisso: per questo NON nascondiamo tutto ciò che
+                                      inizia con "_", ma solo le chiavi tecniche (doppio underscore, _Ymq*, _patch_price).
+                                      Se non troviamo nulla, come ultima risorsa leggiamo il JSON __ymq_option_info.
+                                    {%- endcomment -%}
+                                    {%- capture props_html -%}
+                                      {%- for property in props_line.properties -%}
+                                        {%- assign prop_key = property.first -%}
+                                        {%- assign prop_val = property.last -%}
+                                        {%- assign prop_show = true -%}
+                                        {%- if prop_val == blank -%}{%- assign prop_show = false -%}{%- endif -%}
+                                        {%- assign prop_k2 = prop_key | slice: 0, 2 -%}
+                                        {%- assign prop_k4 = prop_key | slice: 0, 4 | downcase -%}
+                                        {%- if prop_k2 == '__' or prop_k4 == '_ymq' or prop_key == '_patch_price' -%}{%- assign prop_show = false -%}{%- endif -%}
+                                        {%- if prop_show -%}
+                                          {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                          {%- if prop_k1 == '_' -%}{%- assign prop_key = prop_key | remove_first: '_' -%}{%- endif -%}
+                                          {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                          {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                          {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                          {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                          {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                          {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                          {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                          {%- endif -%}
+                                          <tr>
+                                            <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                            <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                              {%- if prop_val contains '/uploads/' -%}
+                                                <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                              {%- else -%}
+                                                {{ prop_val | replace: ' | ', ' · ' }}
+                                              {%- endif -%}
+                                            </td>
+                                          </tr>
+                                        {%- endif -%}
+                                      {%- endfor -%}
+                                    {%- endcapture -%}
+                                    {%- assign props_html_stripped = props_html | strip -%}
+                                    {%- assign ymq_info = props_line.properties['__ymq_option_info'] -%}
+                                    {%- if props_html_stripped == blank and ymq_info != blank -%}
+                                      {%- capture props_html -%}
+                                        {%- assign ymq_pairs = ymq_info | remove: '{' | remove: '}' | replace: '\/', '/' | split: '","' -%}
+                                        {%- for pair in ymq_pairs -%}
+                                          {%- assign kv = pair | split: '":"' -%}
+                                          {%- assign prop_key = kv[0] | remove: '"' | strip -%}
+                                          {%- assign prop_val = kv[1] | remove: '"' | strip -%}
+                                          {%- assign prop_k1 = prop_key | slice: 0 -%}
+                                          {%- if prop_val != blank and prop_k1 != '_' -%}
+                                          {%- assign prop_label = prop_key | strip | remove: '!' -%}
+                                          {%- if prop_label contains 'ricamare il nome' -%}{%- assign prop_label = 'Ricamo del nome' -%}
+                                          {%- elsif prop_label contains 'Scrivi il nome' or prop_label contains 'Nome da ricamare' -%}{%- assign prop_label = 'Nome' -%}
+                                          {%- elsif prop_label contains 'squadra di calcio' -%}{%- assign prop_label = 'Patch squadra' -%}
+                                          {%- elsif prop_label contains 'patch' or prop_label contains 'Patch' -%}{%- assign prop_label = 'Patch' -%}
+                                          {%- elsif prop_label contains 'Scegli il colore' -%}{%- assign prop_label = 'Colore ricamo' -%}
+                                          {%- elsif prop_label contains 'Scegli il carattere' -%}{%- assign prop_label = 'Carattere' -%}
+                                          {%- endif -%}
+                                          <tr>
+                                            <td valign="top" style="padding:3px 10px 3px 0; font-family:{{ f_body }}; font-size:13px; color:{{ c_muted }}; white-space:nowrap;">{{ prop_label }}</td>
+                                            <td valign="top" style="padding:3px 0; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }};">
+                                              {%- if prop_val contains '/uploads/' -%}
+                                                <a href="{{ prop_val }}" target="_blank" style="color:{{ c_blue_light }};">{{ prop_val | split: '/' | last }}</a>
+                                              {%- else -%}
+                                                {{ prop_val | replace: ' | ', ' · ' }}
+                                              {%- endif -%}
+                                            </td>
+                                          </tr>
+                                          {%- endif -%}
+                                        {%- endfor -%}
+                                      {%- endcapture -%}
+                                      {%- assign props_html_stripped = props_html | strip -%}
+                                    {%- endif -%}
+                                    {%- if props_html_stripped != blank -%}
+                                      <table role="presentation" class="grem-props" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px; background:{{ c_box }}; border-radius:8px; border-left:3px solid {{ c_pink }};">
+                                        <tr>
+                                          <td style="padding:8px 12px 7px 12px;">
+                                            <span style="display:block; margin-bottom:4px; font-family:{{ f_body }}; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Personalizzazioni{% if props_line.properties['_YmqItemPrice'] != blank %} · +{{ props_line.properties['_YmqItemPrice'] | times: 100 | round | money }}{% endif %}</span>
+                                            <table role="presentation" cellpadding="0" cellspacing="0" border="0">{{ props_html }}</table>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    {%- endif -%}
+                                  </td>
+                                  {%- if line_item_group.deliverable? -%}
+                                    <td valign="top" align="right" width="90" style="padding-left:12px; font-family:{{ f_body }}; font-size:13px; font-weight:600; color:{{ c_text }}; white-space:nowrap;">
+                                      {%- if component.final_line_price > 0 -%}{{ component.final_line_price | money }}{%- else -%}Gratis{%- endif -%}
+                                    </td>
+                                  {%- endif -%}
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        {%- endfor -%}
+                      {%- endunless -%}
+                    </table>
+                  </td>
+                </tr>
+              {%- endfor -%}
+            </table>
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Totali ---- {%- endcomment -%}
+        {%- assign total_order_discount_amount = 0 -%}
+        {%- assign order_discount_count = 0 -%}
+        {%- assign has_shipping_discount = false -%}
+        {%- for discount_application in discount_applications -%}
+          {%- if discount_application.target_selection == 'all' and discount_application.target_type == 'line_item' -%}
+            {%- assign order_discount_count = order_discount_count | plus: 1 -%}
+            {%- assign total_order_discount_amount = total_order_discount_amount | plus: discount_application.total_allocated_amount -%}
+          {%- endif -%}
+          {%- if discount_application.target_type == 'shipping_line' -%}
+            {%- assign has_shipping_discount = true -%}
+            {%- assign shipping_discount_title = discount_application.title -%}
+            {%- assign shipping_discount_amount = discount_application.total_allocated_amount -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- assign transaction_amount = 0 -%}
+        {%- assign authorized_amount = 0 -%}
+        {%- assign has_refunds = false -%}
+        {%- for transaction in transactions -%}
+          {%- if transaction.kind == "sale" or transaction.kind == "capture" -%}
+            {%- if transaction.status == "success" -%}
+              {%- assign transaction_amount = transaction_amount | plus: transaction.amount -%}
+            {%- endif -%}
+          {%- elsif transaction.kind == "authorization" -%}
+            {%- if transaction.status == "success" -%}
+              {%- assign authorized_amount = authorized_amount | plus: transaction.amount -%}
+            {%- endif -%}
+          {%- elsif transaction.kind == "refund" or transaction.kind == "change" -%}
+            {%- if transaction.status == "success" or transaction.status == "pending" -%}
+              {%- assign transaction_amount = transaction_amount | minus: transaction.amount -%}
+              {%- assign has_refunds = true -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <tr>
+          <td class="grem-pad" style="padding: 8px 40px 0 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="40%" style="font-size:0;">&nbsp;</td>
+                <td>
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family:{{ f_body }}; font-size:14px; color:{{ c_text }};">
+                    <tr>
+                      <td style="padding:6px 0; color:{{ c_muted }};">Subtotale</td>
+                      <td align="right" style="padding:6px 0; font-weight:600;">{{ subtotal_price | plus: total_order_discount_amount | money }}</td>
+                    </tr>
+                    {%- if order_discount_count > 0 -%}
+                      <tr>
+                        <td style="padding:6px 0; color:{{ c_muted }};">Sconto{% if order_discount_count > 1 %} ordine{% else %}{% for discount_application in discount_applications %}{% if discount_application.target_selection == 'all' and discount_application.target_type == 'line_item' %} {{ discount_application.title }}{% endif %}{% endfor %}{% endif %}</td>
+                        <td align="right" style="padding:6px 0; font-weight:600; color:{{ c_pink }};">-{{ total_order_discount_amount | money }}</td>
+                      </tr>
+                    {%- endif -%}
+                    {%- unless retail_delivery_only -%}
+                      {%- if requires_shipping or shipping_price > 0 -%}
+                        <tr>
+                          <td style="padding:6px 0; color:{{ c_muted }};">{% if delivery_method == 'pick-up' %}Ritiro{% else %}Spedizione{% endif %}{% if has_shipping_discount %} <span style="font-size:12px;">({{ shipping_discount_title }})</span>{% endif %}</td>
+                          <td align="right" style="padding:6px 0; font-weight:600;">
+                            {%- if has_shipping_discount and shipping_paid != shipping_price -%}
+                              <span style="font-weight:400; color:{{ c_muted }}; text-decoration:line-through; font-size:12px;">{{ shipping_price | money }}</span>&nbsp;
+                            {%- endif -%}
+                            {%- if shipping_paid > 0 -%}{{ shipping_paid | money }}{%- else -%}Gratis{%- endif -%}
+                          </td>
+                        </tr>
+                      {%- endif -%}
+                    {%- endunless -%}
+                    {%- if total_duties -%}
+                      <tr>
+                        <td style="padding:6px 0; color:{{ c_muted }};">Dazi</td>
+                        <td align="right" style="padding:6px 0; font-weight:600;">{{ total_duties | money }}</td>
+                      </tr>
+                    {%- endif -%}
+                    {%- if total_tip and total_tip > 0 -%}
+                      <tr>
+                        <td style="padding:6px 0; color:{{ c_muted }};">Mancia</td>
+                        <td align="right" style="padding:6px 0; font-weight:600;">{{ total_tip | money }}</td>
+                      </tr>
+                    {%- endif -%}
+                    {%- unless taxes_included -%}
+                      <tr>
+                        <td style="padding:6px 0; color:{{ c_muted }};">Imposte</td>
+                        <td align="right" style="padding:6px 0; font-weight:600;">{{ tax_price | money }}</td>
+                      </tr>
+                    {%- endunless -%}
+                    <tr>
+                      <td colspan="2" style="padding:8px 0 0 0; border-top:2px solid {{ c_blue }};"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding:6px 0; font-family:{{ f_head }}; font-size:16px; font-weight:700; color:{{ c_blue }};">Totale</td>
+                      <td align="right" style="padding:6px 0; font-family:{{ f_head }}; font-size:20px; font-weight:700; color:{{ c_blue }};">{{ total_price | money_with_currency }}</td>
+                    </tr>
+                    {%- if taxes_included -%}
+                      <tr>
+                        <td colspan="2" align="right" style="padding:0 0 6px 0; font-size:12px; color:{{ c_muted }};">di cui IVA inclusa {{ tax_price | money }}</td>
+                      </tr>
+                    {%- endif -%}
+                    {%- if total_discounts > 0 -%}
+                      <tr>
+                        <td colspan="2" align="right" style="padding:0 0 6px 0; font-size:12px; color:{{ c_pink }};">Hai risparmiato {{ total_discounts | money }}</td>
+                      </tr>
+                    {%- endif -%}
+                    {%- if transaction_amount != total_price and payment_terms == nil -%}
+                      {%- unless transaction_amount == 0 and authorized_amount > 0 and has_refunds == false -%}
+                        <tr>
+                          <td style="padding:6px 0; color:{{ c_muted }};">Totale pagato oggi</td>
+                          <td align="right" style="padding:6px 0; font-weight:600;">{{ transaction_amount | money_with_currency }}</td>
+                        </tr>
+                      {%- endunless -%}
+                    {%- endif -%}
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Informazioni cliente ---- {%- endcomment -%}
+        <tr>
+          <td class="grem-pad" style="padding: 32px 40px 8px 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding-bottom:6px; border-bottom:2px solid {{ c_blue }};">
+                  <h2 style="margin:0; font-family:{{ f_head }}; font-size:18px; font-weight:700; color:{{ c_blue }}; letter-spacing:0.02em; text-transform:uppercase;">Informazioni cliente</h2>
+                </td>
+              </tr>
+            </table>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px; font-family:{{ f_body }}; font-size:14px; line-height:1.6; color:{{ c_text }};">
+              <tr>
+                {%- if requires_shipping and shipping_address -%}
+                  <td class="grem-col" valign="top" width="50%" style="padding-right:16px; padding-bottom:16px;">
+                    <span style="display:block; margin-bottom:4px; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Indirizzo di spedizione</span>
+                    {{ shipping_address | format_address }}
+                  </td>
+                {%- endif -%}
+                {%- if billing_address -%}
+                  <td class="grem-col" valign="top" width="50%" style="padding-bottom:16px;">
+                    <span style="display:block; margin-bottom:4px; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Indirizzo di fatturazione</span>
+                    {{ billing_address | format_address }}
+                  </td>
+                {%- endif -%}
+              </tr>
+              <tr>
+                {%- if requires_shipping and shipping_address -%}
+                  <td class="grem-col" valign="top" width="50%" style="padding-right:16px; padding-bottom:16px;">
+                    <span style="display:block; margin-bottom:4px; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Metodo di spedizione</span>
+                    {%- if shipping_methods.size > 0 -%}
+                      {%- assign unique_shipping_titles = shipping_methods | map: 'title' | uniq -%}
+                      {%- for shipping_title in unique_shipping_titles -%}{{ shipping_title }}{% unless forloop.last %}<br>{% endunless %}{%- endfor -%}
+                    {%- elsif shipping_method -%}
+                      {{ shipping_method.title }}
+                    {%- endif -%}
+                  </td>
+                {%- endif -%}
+                {%- capture payment_section_body -%}
+                  {%- for transaction in transactions -%}
+                    {%- if transaction.status == "success" or transaction.status == "pending" -%}
+                      {%- if transaction.kind == "capture" or transaction.kind == "sale" -%}
+                        {%- if transaction.payment_details.gift_card_last_four_digits -%}
+                          Buono regalo che termina con {{ transaction.payment_details.gift_card_last_four_digits }}<br>
+                        {%- elsif transaction.payment_details.type == "card" -%}
+                          {{ transaction.payment_details.credit_card_company | capitalize }} che termina con {{ transaction.payment_details.credit_card_last_four_digits }}<br>
+                          {%- if transaction.first_installment_amount -%}
+                            {{ transaction.first_installment_amount | money }}/mese per {{ transaction.installment_count }} mesi<br>
+                          {%- endif -%}
+                        {%- elsif transaction.payment_details.local_payment? -%}
+                          {{ transaction.payment_details.payment_method_display_name }}<br>
+                        {%- elsif transaction.gateway_display_name != "Shop Cash" and transaction.gateway != "shop_offer" -%}
+                          {{ transaction.gateway_display_name }}<br>
+                        {%- endif -%}
+                      {%- elsif transaction.kind == "authorization" and transaction.gateway_display_name == "Shop Cash" -%}
+                        Shop Cash<br>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endcapture -%}
+                {%- assign payment_section_body_stripped = payment_section_body | strip -%}
+                {%- if payment_section_body_stripped != "" -%}
+                  <td class="grem-col" valign="top" width="50%" style="padding-bottom:16px;">
+                    <span style="display:block; margin-bottom:4px; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:{{ c_blue_light }};">Pagamento</span>
+                    {{ payment_section_body_stripped }}
+                  </td>
+                {%- endif -%}
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Box assistenza ---- {%- endcomment -%}
+        <tr>
+          <td class="grem-pad" style="padding: 8px 40px 32px 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:{{ c_rose }}; border-radius:12px;">
+              <tr>
+                <td style="padding:18px 20px; font-family:{{ f_body }}; font-size:14px; line-height:1.6; color:{{ c_text }};">
+                  <strong style="font-family:{{ f_head }}; font-size:15px; color:{{ c_blue }};">Hai bisogno di aiuto?</strong><br>
+                  Rispondi a questa email, scrivici a <a href="mailto:{{ shop.email }}" style="color:{{ c_blue_light }}; font-weight:600;">{{ shop.email }}</a> oppure contattaci su <a href="https://wa.me/393501570609" style="color:{{ c_blue_light }}; font-weight:600;">WhatsApp</a>.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        {%- comment -%} ---- Footer ---- {%- endcomment -%}
+        <tr>
+          <td class="grem-pad" style="padding: 24px 40px; background:{{ c_blue }}; font-family:{{ f_body }}; color:#ffffff;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="top" style="font-family:{{ f_body }}; font-size:12px; line-height:1.7; color:#ffffff;">
+                  <strong style="font-family:{{ f_head }}; font-size:15px; color:#ffffff;">{{ shop.name }}</strong><br>
+                  <span style="color:#d8ddf3;">Grembiuli, divise e abbigliamento per la scuola, personalizzati con amore.</span><br>
+                  <span style="color:#d8ddf3;">ShowRoom: Via Battaglia di Monte Lungo 34, 70123 Bari · Tel. 080 534 8155</span>
+                </td>
+                <td valign="top" align="right" style="font-family:{{ f_body }}; font-size:12px; line-height:1.7; white-space:nowrap;">
+                  <a href="https://www.instagram.com/ilgrembiulino_shop/" style="color:#ffffff; text-decoration:none; font-weight:600;">Instagram</a><br>
+                  <a href="https://www.facebook.com/ilgrembiulinobypuntograficadue" style="color:#ffffff; text-decoration:none; font-weight:600;">Facebook</a><br>
+                  <a href="{{ shop.url }}" style="color:{{ c_yellow }}; text-decoration:none; font-weight:600;">{{ shop.url | remove: 'https://' | remove: 'http://' }}</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+
+      <p style="margin:16px 0 0 0; font-family:{{ f_body }}; font-size:11px; color:{{ c_muted }};">Hai ricevuto questa email perché hai effettuato un ordine su {{ shop.name }}.</p>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+
+{%- if billing_address.country_code == 'DE' or billing_address.country_code == 'DK' -%}
+  {%- if shop.terms_of_service.body != blank -%}
+    {{ shop.terms_of_service | attach_as_pdf: "Termini e condizioni del servizio" }}
+  {%- endif -%}
+  {%- if shop.refund_policy.body != blank -%}
+    {{ shop.refund_policy | attach_as_pdf: "Informativa sui rimborsi" }}
+  {%- endif -%}
+{%- endif -%}
