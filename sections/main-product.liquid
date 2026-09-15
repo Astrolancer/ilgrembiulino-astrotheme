@@ -530,35 +530,35 @@
         }
       };
 
-      // Arcobaleno classico a 7 stop. Il nome copre sempre l'intera scala:
-      // ogni lettera prende un colore interpolato, quindi nessuna ripetizione
-      // e la prima lettera e' sempre rossa, l'ultima viola.
-      const RAINBOW_STOPS = ['#FF0000', '#FF7F00', '#FFFF00', '#00A550', '#0000FF', '#4B0082', '#8B00FF'];
-
-      const mixHexColors = (fromHex, toHex, ratio) => {
-        const parse = (hex) => [1, 3, 5].map((offset) => parseInt(hex.substr(offset, 2), 16));
-        const from = parse(fromHex);
-        const to = parse(toHex);
-        const channel = (index) => Math.round(from[index] + (to[index] - from[index]) * ratio);
-        return 'rgb(' + channel(0) + ', ' + channel(1) + ', ' + channel(2) + ')';
+      // Colori delle strisce di ogni icona arcobaleno YMQ, dall'alto in basso,
+      // presi dalle immagini degli swatch. Ogni lettera prende il colore
+      // successivo e, finiti i colori, si riparte dal primo.
+      // Nelle icone a 4 strisce con prima e ultima uguali (Arancione, Verde,
+      // Viola) la striscia ripetuta e' esclusa: il ciclo gira sui 3 colori
+      // distinti, cosi' due lettere vicine non hanno mai lo stesso colore.
+      // Chiave: valore dell'opzione in minuscolo. Se il cliente aggiunge un
+      // arcobaleno su YMQ va aggiunto qui, altrimenti usa l'arcobaleno classico.
+      const RAINBOW_PALETTES = {
+        'arcobaleno': ['#FE0000', '#FFB501', '#FFFF01', '#0F8501', '#1414E4', '#7C0185'],
+        'arcobaleno arancione': ['#D15933', '#9FB450', '#5E6DA8'],
+        'arcobaleno verde': ['#89C473', '#46264D', '#1B868E'],
+        'arcobaleno 4 colori': ['#E94D30', '#F1E60D', '#4D79BC', '#64B1C0'],
+        'arcobaleno viola': ['#FEB9EE', '#6B55C3', '#F74AB6'],
+        'arcobaleno fluo': ['#B3EE79', '#EEF734', '#EF8752', '#F99CB9'],
       };
 
-      const rainbowColorAt = (position) => {
-        const clamped = Math.min(1, Math.max(0, position));
-        const scaled = clamped * (RAINBOW_STOPS.length - 1);
-        const index = Math.min(RAINBOW_STOPS.length - 2, Math.floor(scaled));
-        return mixHexColors(RAINBOW_STOPS[index], RAINBOW_STOPS[index + 1], scaled - index);
+      const getRainbowPalette = (colorValue) => {
+        const key = (colorValue || '').trim().toLowerCase().replace(/\s+/g, ' ');
+        if (!key.includes('arcobaleno')) return null;
+        return RAINBOW_PALETTES[key] || RAINBOW_PALETTES.arcobaleno;
       };
 
-      // Spezza il nome in span colorati. Gli spazi restano nodi di testo: non
-      // consumano un colore, cosi' "MARIA ROSA" distribuisce l'arcobaleno sulle
-      // nove lettere invece di sprecare una tacca sullo spazio.
-      const paintRainbowText = (containerEl, text) => {
-        const chars = Array.from(text);
-        const letterCount = chars.filter((char) => !/\s/.test(char)).length;
+      // Spezza il nome in span colorati. Gli spazi restano nodi di testo e non
+      // consumano un colore: in "MARIA ROSA" la R prosegue il ciclo dopo la A.
+      const paintRainbowText = (containerEl, text, palette) => {
         let letterIndex = 0;
 
-        chars.forEach((char) => {
+        Array.from(text).forEach((char) => {
           if (/\s/.test(char)) {
             containerEl.appendChild(document.createTextNode(char));
             return;
@@ -566,9 +566,7 @@
 
           const charEl = document.createElement('span');
           charEl.textContent = char;
-          charEl.style.color = letterCount > 1
-            ? rainbowColorAt(letterIndex / (letterCount - 1))
-            : RAINBOW_STOPS[0];
+          charEl.style.color = palette[letterIndex % palette.length];
           charEl.style.webkitTextFillColor = charEl.style.color;
           containerEl.appendChild(charEl);
           letterIndex += 1;
@@ -609,7 +607,7 @@
       const renderPatchText = ({
         text = '',
         color = '',
-        rainbow = false,
+        rainbowPalette = null,
         backgroundImage = '',
         backgroundStyle = {},
         fontStyle = {},
@@ -626,13 +624,13 @@
           const textEl = document.createElement('div');
           textEl.className = 'product__media-patch-text';
 
-          if (rainbow) {
-            paintRainbowText(textEl, text);
+          if (rainbowPalette) {
+            paintRainbowText(textEl, text, rainbowPalette);
           } else {
             textEl.textContent = text;
           }
 
-          if (rainbow) {
+          if (rainbowPalette) {
             // Il colore e' gia' su ogni lettera: niente maschera sul testo intero.
           } else if (backgroundImage) {
             textEl.style.backgroundImage = backgroundImage;
@@ -695,12 +693,12 @@
         const colorStyleData = getLabelStyleData(colorLabel);
         const fontStyle = getPatchFontStyle(fontInput?.value, hasVisiblePatch);
         const backgroundStyle = getPatchTextBackgroundStyle(colorInput?.value);
-        const isRainbow = (colorInput?.value || '').toLowerCase().includes('arcobaleno');
+        const rainbowPalette = getRainbowPalette(colorInput?.value);
 
         renderPatchText({
           text: nameValue,
           color: colorStyleData.backgroundColor || '#111111',
-          rainbow: isRainbow,
+          rainbowPalette,
           backgroundImage: colorStyleData.backgroundImage || '',
           backgroundStyle,
           fontStyle,
