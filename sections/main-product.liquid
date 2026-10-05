@@ -1918,8 +1918,14 @@
   }
 
   const SCHOOL_PLESSO_INPUT_NAME = 'ymq[Plesso selezionato]';
+  {%- comment -%}
+    Le chiavi sono normalizzate (spazi collassati, lowercase) perche' i valori
+    configurati in YMQ non sono puliti: alcuni template hanno spazi iniziali o
+    finali (es. il template T-ShirtBLU per Grimaldi - Lombardi). Il confronto
+    esatto fallirebbe e la scuola non verrebbe ne' preselezionata ne' riconosciuta.
+  {%- endcomment -%}
   const SCHOOL_VALUE_TO_HANDLE_MAP = Object.fromEntries(
-    Object.entries(SCHOOL_MAP).map(([handle, value]) => [value, handle])
+    Object.entries(SCHOOL_MAP).map(([handle, value]) => [schoolNormalize(value), handle])
   );
 
   function renderSchoolPatchOverlay(handle) {
@@ -1952,7 +1958,7 @@
   function syncSchoolPatchOverlay() {
     const selectedInput = document.querySelector(`input[name="${SCHOOL_PLESSO_INPUT_NAME}"]:checked`);
     const schoolHandle = selectedInput
-      ? SCHOOL_VALUE_TO_HANDLE_MAP[selectedInput.value] || null
+      ? SCHOOL_VALUE_TO_HANDLE_MAP[schoolNormalize(selectedInput.value)] || null
       : null;
 
     renderSchoolPatchOverlay(schoolHandle);
@@ -2018,8 +2024,9 @@
       const checkboxes = document.querySelectorAll('input[name="ymq[Plesso selezionato]"]');
       if (checkboxes.length > 0) {
         clearInterval(poll);
+        const normalizedTarget = schoolNormalize(targetValue);
         checkboxes.forEach(function (cb) {
-          if (cb.value === targetValue) {
+          if (schoolNormalize(cb.value) === normalizedTarget) {
             cb.checked = true;
             cb.dispatchEvent(new Event('change', { bubbles: true }));
             syncSchoolPatchOverlay();
