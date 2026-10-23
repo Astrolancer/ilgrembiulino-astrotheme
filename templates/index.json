@@ -12,12 +12,6 @@
     "rich_text_qJmM8X": {
       "type": "rich-text",
       "blocks": {
-        "text_j3DHfR": {
-          "type": "text",
-          "settings": {
-            "text": "<p><strong>☀️ ULTIMA CHIAMATA -  PROMO SUI GREMBIULI NEUTRI · FINO AL 30 SETTEMBRE</strong></p>"
-          }
-        },
         "heading_7neAUC": {
           "type": "heading",
           "settings": {
@@ -27,7 +21,6 @@
         }
       },
       "block_order": [
-        "text_j3DHfR",
         "heading_7neAUC"
       ],
       "custom_css": [

@@ -30,6 +30,13 @@
             "link": "shopify://collections/all"
           }
         },
+        "announcement_ritardi": {
+          "type": "announcement",
+          "settings": {
+            "text": "Spedizioni rallentate per scioperi e blocchi alla viabilità. Ci scusiamo per l’attesa: il tuo ordine è in lavorazione e partirà il prima possibile.",
+            "link": ""
+          }
+        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
@@ -41,6 +48,7 @@
       "block_order": [
         "announcement-bar-1",
         "announcement_7VAj4D",
+        "announcement_ritardi",
         "announcement-bar-0"
       ],
       "custom_css": [
