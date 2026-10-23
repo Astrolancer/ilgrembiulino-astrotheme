@@ -10,6 +10,43 @@
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
+<style>
+  .product-form__notice{margin:0 0 1.2rem;padding:1rem 1.2rem;border:1px solid rgba(var(--color-foreground),.2);border-left-width:4px;border-radius:4px;font-size:1.3rem;line-height:1.4}
+  .product-form__consent{display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-start;margin:0 0 1.2rem;font-size:1.3rem;line-height:1.4}
+  .product-form__consent-input{flex:none;width:1.8rem;height:1.8rem;margin:.1rem 0 0}
+  .product-form__consent label{flex:1 1 0;min-width:0}
+  .product-form__consent-error{flex-basis:100%;margin:0;color:rgb(var(--color-error,200,30,30))}
+  .product-form__buttons--locked shopify-accelerated-checkout,.product-form__buttons--locked .shopify-payment-button{opacity:.5;pointer-events:none}
+</style>
+<script>
+  (function () {
+    if (window.__customConsentInit) return;
+    window.__customConsentInit = true;
+    function sync(form) {
+      var box = form.querySelector('.product-form__consent-input');
+      if (!box) return;
+      var buttons = form.querySelector('.product-form__buttons');
+      if (buttons) buttons.classList.toggle('product-form__buttons--locked', !box.checked);
+      var err = form.querySelector('.product-form__consent-error');
+      if (err && box.checked) err.hidden = true;
+    }
+    document.addEventListener('change', function (e) {
+      if (e.target.classList && e.target.classList.contains('product-form__consent-input')) sync(e.target.closest('form'));
+    });
+    document.addEventListener('submit', function (e) {
+      var box = e.target.querySelector && e.target.querySelector('.product-form__consent-input');
+      if (!box || box.checked) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var err = e.target.querySelector('.product-form__consent-error');
+      if (err) err.hidden = false;
+      box.focus();
+    }, true);
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.product-form__consent-input').forEach(function (b) { sync(b.closest('form')); });
+    });
+  })();
+</script>
 <div {{ block.shopify_attributes }}>
   {%- if product != blank -%}
     {%- liquid
@@ -59,6 +96,21 @@
         {%- if gift_card_recipient_feature_active -%}
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
+
+        {%- unless gift_card_recipient_feature_active -%}
+          {%- if block.settings.show_shipping_notice -%}
+            <div class="product-form__notice product-form__notice--shipping" role="note">
+              Le spedizioni stanno subendo rallentamenti a causa degli scioperi e dei blocchi alla viabilità in corso. Ci scusiamo per l’attesa: il tuo ordine è in lavorazione e partirà il prima possibile.
+            </div>
+          {%- endif -%}
+          {%- if block.settings.show_custom_consent -%}
+            <div class="product-form__consent">
+              <input type="checkbox" id="CustomConsent-{{ section_id }}" class="product-form__consent-input" required>
+              <label for="CustomConsent-{{ section_id }}">Ho compreso che il prodotto è personalizzato: una volta preso in carico, l’ordine non può essere modificato né rimborsato.</label>
+              <p class="product-form__consent-error" role="alert" hidden>Per procedere devi spuntare la casella qui sopra.</p>
+            </div>
+          {%- endif -%}
+        {%- endunless -%}
 
         <div class="product-form__buttons">
           {%- liquid
